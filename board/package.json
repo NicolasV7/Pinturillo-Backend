@@ -1,0 +1,17 @@
+{
+  "name": "board",
+  "version": "1.0.0",
+  "description": "A simple collaborative board using socket.io",
+  "main": "index.js",
+  "keywords": [
+    "socket.io",
+    "board"
+  ],
+  "dependencies": {
+    "express": "~4.17.1",
+    "socket.io": "^4.0.0"
+  },
+  "scripts": {
+    "start": "node index"
+  }
+}
