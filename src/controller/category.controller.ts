@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { Category } from "../entity/category.entity";
-import { CategoryRepository } from "../repositories/category.repository";
-import { CategoryDTO } from "../dto/category.dto";
-import { validateCategory } from "../schema/category.schema";
+import { Category } from "@entity/category.entity";
+import { CategoryRepository } from "@repository/category.repository";
+import { CategoryDTO } from "@dto/category.dto";
+import { validateCategory } from "@schemas/category.schema";
 
-import { messages } from "../assets/messages";
+import { messages } from "@assets/messages";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -17,7 +17,7 @@ export class CategoryController {
       const category = await this.categoryRepository.findByName(name);
       res.status(200).json({ category });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(500).json({ error: error.message });1
     }
   }
 

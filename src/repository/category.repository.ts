@@ -1,4 +1,4 @@
-import { Category } from "../entity/category.entity";
+import { Category } from "@entity/category.entity";
 import { AppDataSource } from "../data-source";
 
 export class CategoryRepository {

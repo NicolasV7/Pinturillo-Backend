@@ -1,15 +1,21 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
+    "baseUrl": "src",
     "paths": {
-      "@controller/*": ["../controller/*"],
+      "@assets/*": ["assets/*"],
+      "@controller/*": ["controller/*"],
+      "@dto/*": ["dto/*"],
+      "@entity/*": ["entity/*"],
+      "@middleware/*": ["middleware/*"],
+      "@repository/*": ["repository/*"],
+      "@routes/*": ["routes/*"],
+      "@schemas/*": ["schemas/*"],
+      "@service/*": ["service/*"],
     },
-    "lib": ["es6"],
-    "target": "es6",
+    "strict": false,
     "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "./build",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "sourceMap": true,
+    "target": "ES6",
+    "outDir": "dist",
   }
 }
