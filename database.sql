@@ -5,29 +5,28 @@
 -- DROP TABLE public.categoryWord;
 -- DROP TABLE public.game_room;
 
-CREATE TABLE public.word (
-	idWord uuid NOT NULL,
-	word text NOT NULL,
-	CONSTRAINT word_pkey PRIMARY KEY (idWord)
+CREATE TABLE WORD (
+	id serial PRIMARY KEY,
+	text varchar(35) NOT NULL,
 );
 
-CREATE TABLE public.category (
-	idCategory uuid NOT NULL,
+CREATE TABLE CATEGORY (
+	id serial PRIMARY KEY,
 	name varchar(255) NOT NULL,
-	CONSTRAINT category_pkey PRIMARY KEY (idCategory)
 );
 
-CREATE TABLE public.categoryWord (
-	idCategoryWord uuid NOT NULL,
-	idCategory uuid NOT NULL,
-	idWord uuid NOT NULL,
-	CONSTRAINT category_word_pkey PRIMARY KEY (idCategoryWord)
+CREATE TABLE WORD_CATEGORY (
+	id serial PRIMARY KEY,
+	idWord integer NOT NULL,
+	idCategory integer NOT NULL,
+	FOREIGN KEY (idWord) REFERENCES WORD(id),
+	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
 );
 
-CREATE TABLE public.game_room (
-	idGameRoom uuid NOT NULL,
-	roomName varchar(255) NOT NULL,
-	idCategory uuid NOT NULL,
-	state varchar(255) NOT NULL,
-	CONSTRAINT game_room_pkey PRIMARY KEY (idGameRoom)
+CREATE TABLE GAME_ROOM (
+	id serial PRIMARY KEY,
+	roomName varchar(100) NOT NULL,
+	state varchar(100) NOT NULL,
+	idCategory integer NOT NULL,
+	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
 );
