@@ -1,63 +1,50 @@
-import { WordCategoryService } from "../service/word-category.service";
+
+import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
+
+import { messages } from "@assets/messages";
+import { Word } from "@/entity/word.entity";
+import { WordDTO } from "@/dto/word.dto";
+import { WordCategoryService } from "@service/word-category.service";
+import { validateWord } from "@schemas/word.schema";
 
 export class WordCategoryController {
-    private wordCategoryService: WordCategoryService;
+    private wordCategoryService = new WordCategoryService();
 
-    constructor() {
+    constructor() { 
         this.wordCategoryService = new WordCategoryService();
     }
 
-    public getAllWordsCategories = async (req: any, res: any) => {
-        try {
-            const wordCategories = await this.wordCategoryService.getAllWordsCategories();
-            return res.status(200).send(wordCategories);
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }    
-        
-    }
-
-    public findWordCategoryById = async (req: any, res: any) => {
-        const {id} = req.params;
+    public getWordCategoryById = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
             const wordCategory = await this.wordCategoryService.findWordCategoryById(id);
             return res.status(200).send(wordCategory);
         } catch (error) {
             return res.status(500).send(error.message);
         }
-    }
+    };
 
-    public createWordCategory = async (req: any, res: any) => {
-        const wordCategory = req.body;
+    public getAllWordsCategories = async (_: Request, res: Response) => {
         try {
-            await this.wordCategoryService.createWordCategory(wordCategory);
-            return res.status(201).send(wordCategory);
+            const wordsCategories = await this.wordCategoryService.getAllWordsCategories();
+            return res.status(200).send(wordsCategories);
         } catch (error) {
             return res.status(500).send(error.message);
         }
-    }
+    };
 
-    public updateWordCategory = async (req: any, res: any) => {
-        const wordCategory = req.body;
-        try {
-            await this.wordCategoryService.updateWordCategory(wordCategory);
-            return res.status(200).send(wordCategory);
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }
-    }
+    public createWordCategory = async (req: Request, res: Response) => {
+        const wordDTO: WordDTO = req.body;
+        const { error } = validateWord(wordDTO);
+        if (error) return res.status(400).send(error.details[0].message);
 
-    public deleteWordCategory = async (req: any, res: any) => {
-        const {id} = req.params;
+        const wordCategory = new Word();
+        wordCategory.id = uuidv4();
+        wordCategory.text = wordDTO.text as string;
 
-        try {
-            await this.wordCategoryService.deleteWordCategory(id);
-            return res.status(200).send({message: 'Word Category deleted successfully'});
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }
-    }
+        //Pausing here
+    };
 
-    
-    
+
 }
