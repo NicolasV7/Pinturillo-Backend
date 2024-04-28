@@ -1,4 +1,4 @@
-import { GameRoomRepository } from "../repositories/game-room.repository";
+import { GameRoomRepository } from "../repository/game-room.repository";
 import { CategoryRepository } from "../repositories/category.repository";
 
 export class GameRoomService {

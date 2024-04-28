@@ -1,6 +1,6 @@
 import { CategoryRepository } from "../repositories/category.repository";
-import { WordCategoryRepository } from "../repositories/word-category.repository";
-import { WordRepository } from "../repositories/word.repository";
+import { WordCategoryRepository } from "../repository/word-category.repository";
+import { WordRepository } from "../repository/word.repository";
 
 export class WordCategoryService {
     private wordCategoryRepository: WordCategoryRepository;

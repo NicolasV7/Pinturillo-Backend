@@ -1,4 +1,4 @@
-import { WordRepository } from "../repositories/word.repository";
+import { WordRepository } from "../repository/word.repository";
 
 export class WordService {
     private wordRepository: WordRepository;
