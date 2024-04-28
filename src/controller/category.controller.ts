@@ -12,36 +12,37 @@ export class CategoryController {
   private categoryRepository = new CategoryRepository();
 
   public getByName = async (req: Request, res: Response) => {
-    try{
+    try {
       const name = req.params.name;
       const category = await this.categoryRepository.findByName(name);
       res.status(200).json({ category });
     } catch (error) {
-      res.status(500).json({ error: error.message });1
+      res.status(500).json({ error: error.message });
+      1;
     }
-  }
+  };
 
   public getById = async (req: Request, res: Response) => {
-    try{
+    try {
       const id = req.params.id;
       const category = await this.categoryRepository.findById(id);
       res.status(200).json({ category });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
   public getAll = async (req: Request, res: Response) => {
-    try{
+    try {
       const categories = await this.categoryRepository.getAll();
       res.status(200).json({ categories });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
   public create = async (req: Request, res: Response) => {
-    try{
+    try {
       const categoryDTO: CategoryDTO = req.body;
       const { error } = validateCategory(categoryDTO);
       if (error) {
@@ -57,10 +58,10 @@ export class CategoryController {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 
   public delete = async (req: Request, res: Response) => {
-    try{
+    try {
       const id = req.params.id;
       const category = await this.categoryRepository.findById(id);
       if (!category) {
@@ -72,5 +73,5 @@ export class CategoryController {
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  };
 }
