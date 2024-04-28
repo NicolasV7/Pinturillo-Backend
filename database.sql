@@ -1,30 +1,32 @@
--- DROP TABLE IF EXISTS WORD;
--- DROP TABLE IF EXISTS CATEGORY;
--- DROP TABLE IF EXISTS WORD_CATEGORY;
--- DROP TABLE IF EXISTS GAME_ROOM;
+-- Drop table
+
+-- DROP TABLE WORD;
+-- DROP TABLE CATEGORY;
+-- DROP TABLE WORD_CATEGORY;
+-- DROP TABLE GAME_ROOM;
 
 CREATE TABLE WORD (
 	id serial PRIMARY KEY,
-	text varchar(35) NOT NULL,
+	text VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE CATEGORY (
 	id serial PRIMARY KEY,
-	name varchar(255) NOT NULL,
+	name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE WORD_CATEGORY (
 	id serial PRIMARY KEY,
-	idWord integer NOT NULL,
-	idCategory integer NOT NULL,
-	FOREIGN KEY (idWord) REFERENCES WORD(id),
-	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
+	id_category int,
+	id_word int,
+	FOREIGN KEY (id_category) REFERENCES CATEGORY(id),
+	FOREIGN KEY (id_word) REFERENCES WORD(id)
 );
 
 CREATE TABLE GAME_ROOM (
 	id serial PRIMARY KEY,
-	roomName varchar(100) NOT NULL,
-	state varchar(100) NOT NULL,
-	idCategory integer NOT NULL,
-	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
+	room_name VARCHAR(100) NOT NULL,
+	state VARCHAR(100) NOT NULL,
+	id_category int,
+	FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
 );

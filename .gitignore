@@ -6,6 +6,10 @@ dist/
 
 # dependencies
 node_modules/
+build/
+tmp/
+temp/
+.env
 
 # logs
 npm-debug.log*

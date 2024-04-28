@@ -1,24 +1,32 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  BaseEntity,
-  JoinColumn,
-  ManyToMany,
-} from "typeorm";
+    Entity,
+    PrimaryGeneratedColumn,
+    BaseEntity,
+    JoinColumn,
+    Column,
+    ManyToOne,
+  } from 'typeorm';
 
 import { Word } from "./word.entity";
 import { Category } from "./category.entity";
 
-@Entity({ name: "WordCategory" })
+@Entity({ name: 'word_category' })
 export class WordCategory extends BaseEntity {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @ManyToMany(() => Word, (word) => word.id)
-  @JoinColumn({ name: "idWord" })
-  idWord: Word;
+  @Column({nullable: false })
+  id_category: string;
 
-  @ManyToMany(() => Category, (category) => category.id)
-  @JoinColumn({ name: "idCategory" })
-  idCategory: Category;
+  @Column({nullable: false })
+  id_word: string;
+
+  @ManyToOne(() => Category, (category) => category.id, {nullable: false})
+  @JoinColumn({ name: 'id_category' })
+  categories: Category[];
+
+  @ManyToOne(() => Word, (word) => word.id, {nullable: false})
+  @JoinColumn({ name: 'id_word' })
+  words: Word[];
+
 }
