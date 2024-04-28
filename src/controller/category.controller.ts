@@ -1,77 +1,89 @@
 import { Request, Response } from "express";
-import { Category } from "@entity/category.entity";
-import { CategoryRepository } from "@repository/category.repository";
-import { CategoryDTO } from "@dto/category.dto";
-import { validateCategory } from "@schemas/category.schema";
-
-import { messages } from "@assets/messages";
-
 import { v4 as uuidv4 } from "uuid";
 
+import { messages } from "@assets/messages";
+import { Category } from "@entity/category.entity";
+import { CategoryDTO } from "@dto/category.dto";
+import { CategoryService } from "@service/category.service";
+import { validateCategory } from "@schemas/category.schema";
+
 export class CategoryController {
-  private categoryRepository = new CategoryRepository();
+  private categoryService: CategoryService;
+
+  constructor() {
+    this.categoryService = new CategoryService();
+  }
 
   public getByName = async (req: Request, res: Response) => {
+    const { name } = req.params;
     try {
-      const name = req.params.name;
-      const category = await this.categoryRepository.findByName(name);
-      res.status(200).json({ category });
+      const category = await this.categoryService.findByName(name);
+      return res.status(200).send(category);
     } catch (error) {
-      res.status(500).json({ error: error.message });
-      1;
+      return res.status(500).send(error.message);
     }
-  };
+  }
 
   public getById = async (req: Request, res: Response) => {
+    const { id } = req.params;
     try {
-      const id = req.params.id;
-      const category = await this.categoryRepository.findById(id);
-      res.status(200).json({ category });
+      const category = await this.categoryService.findById(id);
+      return res.status(200).send(category);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).send(error.message);
     }
-  };
+  }
 
-  public getAll = async (req: Request, res: Response) => {
+  public getAll = async (_: Request, res: Response) => {
     try {
-      const categories = await this.categoryRepository.getAll();
-      res.status(200).json({ categories });
+      const categories = await this.categoryService.getAll();
+      return res.status(200).send(categories);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).send(error.message);
     }
-  };
+  }
 
   public create = async (req: Request, res: Response) => {
+    const categoryDTO: CategoryDTO = req.body;
+    const { error } = validateCategory(categoryDTO);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const category = new Category();
+    category.id = uuidv4();
+    category.name = categoryDTO.name as string;
+
     try {
-      const categoryDTO: CategoryDTO = req.body;
-      const { error } = validateCategory(categoryDTO);
-      if (error) {
-        return res.status(400).send(error.details[0].message);
-      }
-
-      const category = new Category();
-      category.id = uuidv4();
-      category.name = categoryDTO.name as string;
-
-      await this.categoryRepository.create(category);
-      res.status(201).json({ category });
+      await this.categoryService.create(category);
+      return res.status(201).send(messages.category.created);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).send(error.message);
     }
-  };
+  }
 
   public delete = async (req: Request, res: Response) => {
+    const { id } = req.params;
     try {
-      const id = req.params.id;
-      const category = await this.categoryRepository.findById(id);
-      if (!category) {
-        return res.status(404).json({ error: messages.category.notFound });
-      }
-
-      await this.categoryRepository.delete(category);
-      res.status(204).json();
+      await this.categoryService.delete(id);
+      return res.status(200).send(messages.category.deleted);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(500).send(error.message);
     }
-  };
+  }
+
+  public update = async (req: Request, res: Response) => {
+    const categoryDTO: CategoryDTO = req.body;
+    const { error } = validateCategory(categoryDTO);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    const category = new Category();
+    category.id = categoryDTO.id as string;
+    category.name = categoryDTO.name as string;
+
+    try {
+      await this.categoryService.update(category);
+      return res.status(200).send(messages.category.updated);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  }
 }

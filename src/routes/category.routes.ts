@@ -1,14 +1,13 @@
-import * as express from 'express';
+import * as express from "express";
+import { CategoryController } from "@controller/category.controller";
 
-import { CategoryController } from '@controller/category.controller';
+export const CategoryRouter = express.Router();
 
-const router = express.Router();
 const categoryController = new CategoryController();
 
-router.get('/category/:name', categoryController.getByName);
-router.get('/category/:id', categoryController.getById);
-router.get('/category', categoryController.getAll);
-router.post('/category', categoryController.create);
-router.delete('/category', categoryController.delete);
-
-export { router as categoryRoutes}
+CategoryRouter.get('/getAll', categoryController.getAll);
+CategoryRouter.get('/getById/:id', categoryController.getById);
+CategoryRouter.get('/getByName/:name', categoryController.getByName);
+CategoryRouter.post('/create', categoryController.create);
+CategoryRouter.delete('/delete/:id', categoryController.delete);
+CategoryRouter.put('/update', categoryController.update);

@@ -1,4 +1,4 @@
-export class Word{
-    id: String;
+export class WordDTO {
+    id: number;
     text: String;
 }
