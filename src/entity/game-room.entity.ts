@@ -9,18 +9,23 @@ import {
 
 import { Category } from "@entity/category.entity";
 
-@Entity({ name: 'game_room' })
+@Entity({ name: "game_room" })
 export class GameRoom extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({type:'varchar', nullable: false })
+  @Column({ type: "varchar", nullable: false })
   name: string;
 
-  @Column({type:'varchar', default:'Sin iniciar' ,nullable: false, enum: ['Sin iniciar', 'en curso', 'finalizado'] })
+  @Column({
+    type: "varchar",
+    default: "Sin iniciar",
+    nullable: false,
+    enum: ["Sin iniciar", "en curso", "finalizado"],
+  })
   state: string;
 
   @ManyToOne(() => Category, (category) => category.id)
-  @JoinColumn({ name: 'id_category' })
+  @JoinColumn({ name: "id_category" })
   idCategory: Category;
 }

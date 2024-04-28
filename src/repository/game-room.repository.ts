@@ -1,5 +1,5 @@
-import { UpdateResult } from "typeorm";
-import { AppDataSource } from "../data-source";
+
+import { AppDataSource } from "@/data-source";
 import { GameRoom } from "@entity/game-room.entity";
 
 export class GameRoomRepository {

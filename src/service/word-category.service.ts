@@ -1,79 +1,33 @@
+import { messages } from "@/assets/messages";
+import { WordCategory } from "@entity/word-category.entity";
 import { CategoryRepository } from "@repository/category.repository";
 import { WordCategoryRepository } from "@repository/word-category.repository";
 import { WordRepository } from "@repository/word.repository";
 
 export class WordCategoryService {
-    private wordCategoryRepository: WordCategoryRepository;
-    private wordRepository: WordRepository;
-    private categoryRepository: CategoryRepository;
+  private wordCategoryRepository = new WordCategoryRepository();
+  private wordRepository = new WordRepository();
+  private categoryRepository = new CategoryRepository();
 
-    constructor() {
-        this.wordCategoryRepository = new WordCategoryRepository();
-        this.wordRepository = new WordRepository();
-        this.categoryRepository = new CategoryRepository();
+  constructor() {
+    this.wordCategoryRepository = new WordCategoryRepository();
+    this.wordRepository = new WordRepository();
+    this.categoryRepository = new CategoryRepository();
+  }
+
+  async getAllWordsCategories() {
+    return await this.wordCategoryRepository.getAllWordsCategories();
+  }
+
+  async findWordCategoryById(id: string) {
+    const wordCategoryData =
+      await this.wordCategoryRepository.findWordCategoryById(id);
+    if (!wordCategoryData) {
+      return {
+        message: messages.wordCategory.notFound,
+      };
     }
 
-    async getAllWordsCategories() {
-        return await this.wordCategoryRepository.getAllWordsCategories();
-    }
-
-    async findWordCategoryById(id: number) {
-        const wordCategoryData = await this.wordCategoryRepository.findWordCategoryById(id);
-        if (!wordCategoryData) {
-            return {
-                message: 'Word Category Id does not exist'
-            };
-        }
-
-        return wordCategoryData;
-    }
-
-    async createWordCategory(wordCategory: any) {
-        const idWord = await this.wordRepository.findWordById(wordCategory.idWord);
-        const idCategory = await this.categoryRepository.findCategoryById(wordCategory.idCategory);
-        if (!idWord) {
-            return {
-                message: 'Word Id does not exist'
-            };
-        }
-
-        if (!idCategory) {
-            return {
-                message: 'Category Id does not exist'
-            };
-        }
-
-        return await this.wordCategoryRepository.createWordCategory(wordCategory);
-    }
-
-    async updateWordCategory(wordCategory: any) {
-        const wordCategoryData = await this.wordCategoryRepository.findWordCategoryById(wordCategory.id);
-        const idWord = await this.wordRepository.findWordById(wordCategory.idWord);
-        const idCategory = await this.categoryRepository.findCategoryById(wordCategory.idCategory);
-
-        if (!wordCategoryData) {
-            return {
-                message: 'Word Category does not exist'
-            };
-        }
-
-        if (!idWord) {
-            return {
-                message: 'Word Id does not exist'
-            };
-        }
-
-        if (!idCategory) {
-            return {
-                message: 'Category Id does not exist'
-            };
-        }
-
-
-        return await this.wordCategoryRepository.updateWordCategory(wordCategory);
-    }
-
-    async deleteWordCategory(id: number) {
-        return this.wordCategoryRepository.deleteWordCategory(id);
-    }
+    return wordCategoryData;
+  }
 }

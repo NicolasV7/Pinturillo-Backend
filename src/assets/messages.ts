@@ -15,6 +15,14 @@ export const messages = {
     updated: 'Game Room updated',
     deleted: 'Game Room deleted',
   },
+  wordCategory: {
+    notFound: 'Word Category not found',
+    notFoundById: 'Word Category with the given ID not found',
+    alreadyExists: 'Word Category already exists',
+    created: 'Word Category created',
+    updated: 'Word Category updated',
+    deleted: 'Word Category deleted',
+  },
 
   auth: {
     invalidCredentials: 'Invalid credentials',

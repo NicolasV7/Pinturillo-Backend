@@ -1,6 +1,6 @@
 import { UpdateResult } from "typeorm";
-import { AppDataSource } from "../data-source";
-import { Word } from "../entity/word.entity";
+import { AppDataSource } from "@/data-source";
+import { Word } from "@entity/word.entity";
 
 export class WordRepository {
     private repository = AppDataSource.getRepository(Word);
