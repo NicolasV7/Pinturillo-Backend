@@ -1,0 +1,22 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "@assets/*": ["assets/*"],
+      "@controller/*": ["controller/*"],
+      "@dto/*": ["dto/*"],
+      "@entity/*": ["entity/*"],
+      "@middleware/*": ["middleware/*"],
+      "@repository/*": ["repository/*"],
+      "@routes/*": ["routes/*"],
+      "@schemas/*": ["schemas/*"],
+      "@service/*": ["service/*"],
+    },
+    "strict": true,
+    "module": "ES2020",
+    "target": "ES2020",
+    "outDir": "dist",
+    "useUnknownInCatchVariables": false,
+  }
+}
