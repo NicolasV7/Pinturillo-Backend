@@ -2,7 +2,7 @@ import { AppDataSource } from "./data-source";
 import * as dotenv from "dotenv";
 
 import "reflect-metadata";
-import { errorHandler } from "./middleware/errorHandler";
+import { errorHandler } from "./middleware/errorHandler"
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger'
 const cors = require('cors');

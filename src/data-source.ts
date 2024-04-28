@@ -3,6 +3,8 @@ import { DataSource } from "typeorm";
 
 import * as dotenv from "dotenv";
 
+import { Category } from "./entity/category.entity";
+
 
 dotenv.config();
 

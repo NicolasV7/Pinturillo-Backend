@@ -1,28 +1,30 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BaseEntity,
-    ManyToOne,
-    JoinColumn,
-  } from 'typeorm';
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 
-import { Category } from './category.entity';
+import { Category } from "./category.entity";
 
-@Entity({ name: 'GameRoom' })
+@Entity({ name: "GameRoom" })
 export class GameRoom extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column({ nullable: false })
   name?: string;
 
-  @Column({ default:'Sin iniciar' ,nullable: false, enum: ['Sin iniciar', 'en curso', 'finalizado'] })
+  @Column({
+    default: "Sin iniciar",
+    nullable: false,
+    enum: ["Sin iniciar", "en curso", "finalizado"],
+  })
   state: string;
 
   @ManyToOne(() => Category, (category) => category.id)
-  @JoinColumn({ name: 'idCategory' })
+  @JoinColumn({ name: "idCategory" })
   idCategory: Category;
-
-
 }
