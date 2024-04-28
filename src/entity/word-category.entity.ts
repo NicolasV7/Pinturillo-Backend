@@ -12,8 +12,8 @@ import { Category } from "@entity/category.entity";
 
 @Entity({ name: 'word_category' })
 export class WordCategory extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({nullable: false })
   id_category: string;

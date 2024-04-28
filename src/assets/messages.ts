@@ -7,24 +7,17 @@ export const messages = {
     updated: 'Category updated',
     deleted: 'Category deleted',
   },
-  product: {
-    notFound: 'Product not found',
-    notFoundById: 'Product with the given ID not found',
-    alreadyExists: 'Product already exists',
-    created: 'Product created',
-    updated: 'Product updated',
-    deleted: 'Product deleted',
+  gameRoom: {
+    notFound: 'Game Room not found',
+    notFoundById: 'Game Room with the given ID not found',
+    alreadyExists: 'Game Room already exists',
+    created: 'Game Room created',
+    updated: 'Game Room updated',
+    deleted: 'Game Room deleted',
   },
-  user: {
-    notFound: 'User not found',
-    notFoundById: 'User with the given ID not found',
-    alreadyExists: 'User already exists',
-    created: 'User created',
-    updated: 'User updated',
-    deleted: 'User deleted',
-  },
+
   auth: {
-    invalidCredentials: 'Invalid email or password',
+    invalidCredentials: 'Invalid credentials',
     unauthorized: 'Unauthorized',
   },
   validation: {

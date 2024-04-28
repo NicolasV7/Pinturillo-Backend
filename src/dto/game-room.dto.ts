@@ -1,5 +1,5 @@
 export class GameRoomDTO {
-    id: number;
+    id: String;
     name: String;
     state: String;
     idCategory: String;

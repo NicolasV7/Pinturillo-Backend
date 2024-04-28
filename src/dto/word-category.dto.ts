@@ -1,5 +1,5 @@
 export class WordCategoryDTO {
-    id: number;
+    id: String;
     idWord: String;
     idCategory: String;
 }

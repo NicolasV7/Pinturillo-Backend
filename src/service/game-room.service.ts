@@ -1,53 +1,55 @@
+import { messages } from "@assets/messages";
+import { GameRoom } from "@entity/game-room.entity";
 import { GameRoomRepository } from "@repository/game-room.repository";
 import { CategoryRepository } from "@repository/category.repository";
 
 export class GameRoomService {
-    private gameRoomRepository: GameRoomRepository;
-    private categoryRepository: CategoryRepository;
+    private gameRoomRepository = new GameRoomRepository();
+    private categoryRepository = new CategoryRepository();
 
     constructor() {
         this.gameRoomRepository = new GameRoomRepository();
         this.categoryRepository = new CategoryRepository();
     }
 
-    async getAllGameRooms() {
-        return await this.gameRoomRepository.getAllGameRooms();
+    async getAllGamesRooms() {
+        return await this.gameRoomRepository.getAllGamesRooms();
     }
 
-    async findGameRoomById(id: number) {
-        const gameRoomData = await this.gameRoomRepository.findGameRoomById(id);
-        if (!gameRoomData) {
+    async findGameRoomById(id: string) {
+        const gameRoom = await this.gameRoomRepository.findGameRoomById(id);
+        if (!gameRoom) {
             return {
-                message: 'Game Room Id does not exist'
+                message: messages.gameRoom.notFound,
             };
         }
 
-        return gameRoomData;
+        return gameRoom;
     }
 
-    async createGameRoom(gameRoom: any) {
-        const idCategory = await this.categoryRepository.findById(gameRoom.idCategory);
-        if (idCategory) {
+    async createGameRoom(gameRoom: GameRoom) {
+        const category = await this.categoryRepository.findById(gameRoom.idCategory.id);
+        if (!category) {
             return {
-                message: 'Game Room already exists'
+                message: messages.category.notFound,
             };
         }
+
         return await this.gameRoomRepository.createGameRoom(gameRoom);
-
     }
 
-    async updateGameRoom(gameRoom: any) {
+    async updateGameRoom(gameRoom: GameRoom) {
         const gameRoomData = await this.gameRoomRepository.findGameRoomById(gameRoom.id);
         if (!gameRoomData) {
             return {
-                message: 'Game Room does not exist'
+                message: messages.gameRoom.notFound,
             };
         }
 
         return await this.gameRoomRepository.updateGameRoom(gameRoom);
     }
 
-    async deleteGameRoom(id: number) {
+    async deleteGameRoom(id: string) {
         return this.gameRoomRepository.deleteGameRoom(id);
     }
 

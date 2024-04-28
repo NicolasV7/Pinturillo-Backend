@@ -1,4 +1,4 @@
 export class WordDTO {
-    id: number;
+    id: String;
     text: String;
 }

@@ -10,8 +10,8 @@ import { Category } from '@entity/category.entity';
 
   @Entity({ name: 'word' })
   export class Word extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+    @PrimaryGeneratedColumn('uuid')
+    id: string;
   
     @Column({ type:'varchar', nullable: false })
     text: string;

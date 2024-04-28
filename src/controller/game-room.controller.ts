@@ -1,61 +1,64 @@
-import { GameRoomService } from "../service/game-room.service";
+import { Request, Response } from "express";
+import { v4 as uuidv4 } from "uuid";
+
+import { messages } from "@assets/messages";
+import { GameRoomService } from "@service/game-room.service";
 
 export class GameRoomController {
-    private gameRoomService: GameRoomService;
+    private gameRoomservice = new GameRoomService();
 
     constructor() {
-        this.gameRoomService = new GameRoomService();
+        this.gameRoomservice = new GameRoomService();
     }
 
-    public getAllGameRooms = async (req: any, res: any) => {
+    public getAllGameRooms = async (req: Request, res: Response) => {
         try {
-            const gameRooms = await this.gameRoomService.getAllGameRooms();
+            const gameRooms = await this.gameRoomservice.getAllGamesRooms();
             return res.status(200).send(gameRooms);
         } catch (error) {
             return res.status(500).send(error.message);
-        }    
-        
+        }
     }
 
-    public findGameRoomById = async (req: any, res: any) => {
-        const {id} = req.params;
+    public findGameRoomById = async (req: Request, res: Response) => {
+        const { id } = req.params;
         try {
-            const gameRoom = await this.gameRoomService.findGameRoomById(id);
+            const gameRoom = await this.gameRoomservice.findGameRoomById(id);
             return res.status(200).send(gameRoom);
         } catch (error) {
             return res.status(500).send(error.message);
         }
     }
 
-    public createGameRoom = async (req: any, res: any) => {
+    public createGameRoom = async (req: Request, res: Response) => {
+        const gameRoom = req.body;
+        gameRoom.id = uuidv4();
+        try {
+            await this.gameRoomservice.createGameRoom(gameRoom);
+            return res.status(201).send({ message: messages.gameRoom.created });
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
+    public updateGameRoom = async (req: Request, res: Response) => {
         const gameRoom = req.body;
         try {
-            await this.gameRoomService.createGameRoom(gameRoom);
-            return res.status(201).send({message: 'Game Room created successfully'});
+            await this.gameRoomservice.updateGameRoom(gameRoom);
+            return res.status(200).send({ message: messages.gameRoom.updated });
         } catch (error) {
             return res.status(500).send(error.message);
         }
     }
 
-    public updateGameRoom = async (req: any, res: any) => {
-        const gameRoom = req.body;
-        try {
-            await this.gameRoomService.updateGameRoom(gameRoom);
-            return res.status(200).send({message: 'Game Room updated successfully'});
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }
-    }
-
-    public deleteGameRoom = async (req: any, res: any) => {
-        const {id} = req.params;
+    public deleteGameRoom = async (req: Request, res: Response) => {
+        const { id } = req.params;
 
         try {
-            await this.gameRoomService.deleteGameRoom(id);
-            return res.status(200).send({message: 'Game Room deleted successfully'});
+            await this.gameRoomservice.deleteGameRoom(id);
+            return res.status(200).send({ message: messages.gameRoom.deleted });
         } catch (error) {
             return res.status(500).send(error.message);
         }
     }
-    
 }

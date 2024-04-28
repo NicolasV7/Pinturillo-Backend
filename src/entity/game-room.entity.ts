@@ -11,11 +11,11 @@ import { Category } from "@entity/category.entity";
 
 @Entity({ name: 'game_room' })
 export class GameRoom extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({type:'varchar', nullable: false })
-  name?: string;
+  name: string;
 
   @Column({type:'varchar', default:'Sin iniciar' ,nullable: false, enum: ['Sin iniciar', 'en curso', 'finalizado'] })
   state: string;
