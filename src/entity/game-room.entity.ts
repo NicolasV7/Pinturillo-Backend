@@ -9,19 +9,19 @@ import {
 
 import { Category } from './category.entity';
 
-@Entity({ name: 'GameRoom' })
+@Entity({ name: 'Game_Room' })
 export class GameRoom extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ nullable: false })
+  @Column({type:'varchar', nullable: false })
   name?: string;
 
-  @Column({ default:'Sin iniciar' ,nullable: false, enum: ['Sin iniciar', 'en curso', 'finalizado'] })
+  @Column({type:'varchar', default:'Sin iniciar' ,nullable: false, enum: ['Sin iniciar', 'en curso', 'finalizado'] })
   state: string;
 
   @ManyToOne(() => Category, (category) => category.id)
-  @JoinColumn({ name: 'idCategory' })
+  @JoinColumn({ name: 'id_category' })
   idCategory: Category;
 
 

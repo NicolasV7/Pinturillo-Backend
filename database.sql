@@ -1,33 +1,32 @@
 -- Drop table
 
--- DROP TABLE public.word;
--- DROP TABLE public.category;
--- DROP TABLE public.categoryWord;
--- DROP TABLE public.game_room;
+-- DROP TABLE WORD;
+-- DROP TABLE CATEGORY;
+-- DROP TABLE WORD_CATEGORY;
+-- DROP TABLE GAME_ROOM;
 
-CREATE TABLE public.word (
-	idWord uuid NOT NULL,
-	word text NOT NULL,
-	CONSTRAINT word_pkey PRIMARY KEY (idWord)
+CREATE TABLE WORD (
+	id serial PRIMARY KEY,
+	text VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE public.category (
-	idCategory uuid NOT NULL,
-	name varchar(255) NOT NULL,
-	CONSTRAINT category_pkey PRIMARY KEY (idCategory)
+CREATE TABLE CATEGORY (
+	id serial PRIMARY KEY,
+	name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE public.categoryWord (
-	idCategoryWord uuid NOT NULL,
-	idCategory uuid NOT NULL,
-	idWord uuid NOT NULL,
-	CONSTRAINT category_word_pkey PRIMARY KEY (idCategoryWord)
+CREATE TABLE WORD_CATEGORY (
+	id serial PRIMARY KEY,
+	id_category int,
+	id_word int,
+	FOREIGN KEY (id_category) REFERENCES CATEGORY(id),
+	FOREIGN KEY (id_word) REFERENCES WORD(id)
 );
 
-CREATE TABLE public.game_room (
-	idGameRoom uuid NOT NULL,
-	roomName varchar(255) NOT NULL,
-	idCategory uuid NOT NULL,
-	state varchar(255) NOT NULL,
-	CONSTRAINT game_room_pkey PRIMARY KEY (idGameRoom)
+CREATE TABLE GAME_ROOM (
+	id serial PRIMARY KEY,
+	room_name VARCHAR(100) NOT NULL,
+	state VARCHAR(100) NOT NULL,
+	id_category int,
+	FOREIGN KEY (id_category) REFERENCES CATEGORY(id)
 );

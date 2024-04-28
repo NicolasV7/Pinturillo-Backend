@@ -1,5 +1,5 @@
 export class GameRoom {
-    id: String;
+    id: number;
     name: String;
     state: String;
     idCategory: String;

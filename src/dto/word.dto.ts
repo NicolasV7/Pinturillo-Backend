@@ -1,4 +1,4 @@
 export class Word{
-    id: String;
+    id: number;
     text: String;
 }

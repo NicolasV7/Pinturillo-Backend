@@ -3,14 +3,19 @@ import {
     PrimaryGeneratedColumn,
     Column,
     BaseEntity,
+    ManyToMany,
   } from 'typeorm';
+import { Word } from './word.entity';
 
 @Entity({ name: 'Category' })
 export class Category extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @Column({ nullable: false })
+  @Column({type:'varchar' ,unique:true ,nullable: false })
   name: string;
+
+  @ManyToMany(() => Word, (word) => word.categories, {eager: true})
+  words: Word[];
 
 }
