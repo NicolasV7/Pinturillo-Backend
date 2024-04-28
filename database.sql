@@ -1,9 +1,7 @@
--- Drop table
-
--- DROP TABLE public.word;
--- DROP TABLE public.category;
--- DROP TABLE public.categoryWord;
--- DROP TABLE public.game_room;
+-- DROP TABLE IF EXISTS WORD;
+-- DROP TABLE IF EXISTS CATEGORY;
+-- DROP TABLE IF EXISTS WORD_CATEGORY;
+-- DROP TABLE IF EXISTS GAME_ROOM;
 
 CREATE TABLE WORD (
 	id serial PRIMARY KEY,
