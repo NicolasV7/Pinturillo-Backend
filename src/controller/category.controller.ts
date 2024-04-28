@@ -11,6 +11,10 @@ import { v4 as uuidv4 } from "uuid";
 export class CategoryController {
   private categoryRepository = new CategoryRepository();
 
+  constructor() {
+    this.categoryRepository = new CategoryRepository();
+  }
+
   public getByName = async (req: Request, res: Response) => {
     try {
       const name = req.params.name;

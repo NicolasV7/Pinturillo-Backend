@@ -5,6 +5,7 @@ dist/
 .astro/
 
 # dependencies
+.vscode/
 node_modules/
 build/
 tmp/

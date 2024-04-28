@@ -1,21 +1,10 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BaseEntity,
-    ManyToMany,
-  } from 'typeorm';
-import { Word } from './word.entity';
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
-@Entity({ name: 'category' })
+@Entity({ name: "Category" })
 export class Category extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({type:'varchar' ,unique:true ,nullable: false })
+  @Column()
   name: string;
-
-  @ManyToMany(() => Word, (word) => word.categories, {eager: true})
-  words: Word[];
-
 }

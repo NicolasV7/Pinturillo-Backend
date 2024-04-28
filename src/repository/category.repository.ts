@@ -20,7 +20,11 @@ export class CategoryRepository {
     return this.dataSource.save(category);
   }
 
-  async delete(category: Category) {
-    return this.dataSource.remove(category);
+  async delete(id: string) {
+    return this.dataSource.delete(id);
+  }
+
+  async update(category: Category) {
+    return this.dataSource.update(category.id, category);
   }
 }

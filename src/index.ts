@@ -4,7 +4,7 @@ import * as dotenv from 'dotenv';
 import 'reflect-metadata';
 import { errorHandler } from './middleware/errorHandler'
 import * as swaggerUi from 'swagger-ui-express';
-import * as swaggerSpec from './swagger'
+import * as swaggerSpec from './swagger';
 
 import { CategoryRouter } from "./routes/category.routes";
 import { GameRoomRouter } from "./routes/game-room.routes";
