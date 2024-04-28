@@ -28,6 +28,6 @@ export class WordCategoryService {
       };
     }
 
-    return wordCategoryData;
+    return await this.wordCategoryRepository.findWordCategoryById(id);
   }
 }

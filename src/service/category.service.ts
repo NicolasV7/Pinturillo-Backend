@@ -16,7 +16,7 @@ export class CategoryService {
         message: messages.category.notFound,
       };
     }
-    return this.categoryRepository.findByName(name);
+    return await this.categoryRepository.findByName(name);
   }
 
   async findById(id: string) {
@@ -26,11 +26,11 @@ export class CategoryService {
         message: messages.category.notFoundById,
       };
     }
-    return this.categoryRepository.findById(id);
+    return await this.categoryRepository.findById(id);
   }
 
   async getAll() {
-    return this.categoryRepository.getAll();
+    return await this.categoryRepository.getAll();
   }
 
   async create(category: Category) {
@@ -40,7 +40,7 @@ export class CategoryService {
         message: messages.category.alreadyExists,
       };
     }
-    return this.categoryRepository.create(category);
+    return await this.categoryRepository.create(category);
   }
 
   async delete(id: string) {
@@ -50,7 +50,7 @@ export class CategoryService {
         message: messages.category.notFoundById,
       };
     }
-    return this.categoryRepository.delete(id);
+    return await this.categoryRepository.delete(id);
   }
 
   async update(category: Category) {
@@ -60,6 +60,6 @@ export class CategoryService {
         message: messages.category.notFound,
       };
     }
-    return this.categoryRepository.update(category);
+    return await this.categoryRepository.update(category);
   }
 }

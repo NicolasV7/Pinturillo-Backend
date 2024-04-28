@@ -24,7 +24,7 @@ export class GameRoomService {
             };
         }
 
-        return gameRoom;
+        return await this.gameRoomRepository.findGameRoomById(id);
     }
 
     async createGameRoom(gameRoom: GameRoom) {
@@ -50,7 +50,7 @@ export class GameRoomService {
     }
 
     async deleteGameRoom(id: string) {
-        return this.gameRoomRepository.deleteGameRoom(id);
+        return await this.gameRoomRepository.deleteGameRoom(id);
     }
 
 }

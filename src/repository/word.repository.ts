@@ -1,32 +1,31 @@
-import { UpdateResult } from "typeorm";
 import { AppDataSource } from "@/data-source";
 import { Word } from "@entity/word.entity";
 
 export class WordRepository {
-    private repository = AppDataSource.getRepository(Word);
+    private dataSource = AppDataSource.getRepository(Word);
 
-    async getAllWords(): Promise<Word[]> {
-        return this.repository.find();
+    async getAllWords(){
+        return this.dataSource.find();
     }
 
-    async findWordById(id: number): Promise<Word> {
-        return this.repository.findOneBy({ id })
+    async findWordById(id: string){
+        return this.dataSource.findOneBy({ id });
     }
 
-    async getWordByName(text: string): Promise<Word> {
-        return this.repository.findOneBy({ text });
+    async createWord(word: Word){
+        return this.dataSource.save(word);
     }
 
-    async createWord(word: Word): Promise<Word> {
-        return this.repository.save(word);
+    async updateWord(word: Word){
+        return this.dataSource.update(word.id, word);
     }
 
-    async updateWord(word: Word): Promise<UpdateResult> {
-        return this.repository.update(word.id, word);
+    async deleteWord(id: string){
+        return this.dataSource.delete(id);
     }
 
-    async deleteWord(id: number): Promise<void> {
-        await this.repository.delete(id);
+    async findWordByText(text: string){
+        return this.dataSource.findOneBy({ text });
     }
 
 }
