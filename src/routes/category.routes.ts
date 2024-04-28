@@ -5,9 +5,9 @@ export const CategoryRouter = express.Router();
 
 const categoryController = new CategoryController();
 
-CategoryRouter.get('/getAll', categoryController.getAll);
-CategoryRouter.get('/getById/:id', categoryController.getById);
-CategoryRouter.get('/getByName/:name', categoryController.getByName);
-CategoryRouter.post('/create', categoryController.create);
-CategoryRouter.delete('/delete/:id', categoryController.delete);
-CategoryRouter.put('/update', categoryController.update);
+CategoryRouter.get('/getAll', categoryController.getAllCategory);
+CategoryRouter.get('/getById/:id', categoryController.getCategoryById);
+CategoryRouter.get('/getByName/:name', categoryController.getCategoryByName);
+CategoryRouter.post('/create', categoryController.createCategory);
+CategoryRouter.delete('/delete/:id', categoryController.deleteCategory);
+CategoryRouter.put('/update', categoryController.updateCategory);

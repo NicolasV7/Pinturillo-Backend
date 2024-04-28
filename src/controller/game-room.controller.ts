@@ -12,7 +12,7 @@ export class GameRoomController {
     this.gameRoomservice = new GameRoomService();
   }
 
-  public getAllGameRooms = async (req: Request, res: Response) => {
+  public getAllGameRooms = async (_: Request, res: Response) => {
     try {
       const gameRooms = await this.gameRoomservice.getAllGamesRooms();
       return res.status(200).send(gameRooms);

@@ -14,7 +14,7 @@ export class CategoryController {
     this.categoryService = new CategoryService();
   }
 
-  public getByName = async (req: Request, res: Response) => {
+  public getCategoryByName = async (req: Request, res: Response) => {
     const { name } = req.params;
     try {
       const category = await this.categoryService.findByName(name);
@@ -24,7 +24,7 @@ export class CategoryController {
     }
   };
 
-  public getById = async (req: Request, res: Response) => {
+  public getCategoryById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
       const category = await this.categoryService.findById(id);
@@ -34,7 +34,7 @@ export class CategoryController {
     }
   };
 
-  public getAll = async (_: Request, res: Response) => {
+  public getAllCategory = async (_: Request, res: Response) => {
     try {
       const categories = await this.categoryService.getAll();
       return res.status(200).send(categories);
@@ -43,7 +43,7 @@ export class CategoryController {
     }
   };
 
-  public create = async (req: Request, res: Response) => {
+  public createCategory = async (req: Request, res: Response) => {
     const categoryDTO: CategoryDTO = req.body;
     const { error } = validateCategory(categoryDTO);
     if (error) return res.status(400).send(error.details[0].message);
@@ -60,7 +60,7 @@ export class CategoryController {
     }
   };
 
-  public delete = async (req: Request, res: Response) => {
+  public deleteCategory = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
       await this.categoryService.delete(id);
@@ -70,7 +70,7 @@ export class CategoryController {
     }
   };
 
-  public update = async (req: Request, res: Response) => {
+  public updateCategory = async (req: Request, res: Response) => {
     const categoryDTO: CategoryDTO = req.body;
     const { error } = validateCategory(categoryDTO);
     if (error) return res.status(400).send(error.details[0].message);
