@@ -22,7 +22,7 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 
   public getById = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -32,7 +32,7 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 
   public getAll = async (_: Request, res: Response) => {
     try {
@@ -41,7 +41,7 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 
   public create = async (req: Request, res: Response) => {
     const categoryDTO: CategoryDTO = req.body;
@@ -58,7 +58,7 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 
   public delete = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -68,7 +68,7 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 
   public update = async (req: Request, res: Response) => {
     const categoryDTO: CategoryDTO = req.body;
@@ -85,5 +85,5 @@ export class CategoryController {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-  }
+  };
 }

@@ -3,18 +3,20 @@
 -- DROP IF EXISTS TABLE WORD_CATEGORY;
 -- DROP IF EXISTS TABLE GAME_ROOM;
 
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
+
 CREATE TABLE WORD (
-	id serial PRIMARY KEY,
+	id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	text VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE CATEGORY (
-	id serial PRIMARY KEY,
+	id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY, 
 	name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE WORD_CATEGORY (
-	id serial PRIMARY KEY,
+	id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	id_category int,
 	id_word int,
 	FOREIGN KEY (id_category) REFERENCES CATEGORY(id),
@@ -22,7 +24,7 @@ CREATE TABLE WORD_CATEGORY (
 );
 
 CREATE TABLE GAME_ROOM (
-	id serial PRIMARY KEY,
+	id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	room_name VARCHAR(100) NOT NULL,
 	state VARCHAR(100) NOT NULL,
 	id_category int,
