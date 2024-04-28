@@ -18,7 +18,7 @@ export class GameRoomController {
     }
 
     public findGameRoomById = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
         try {
             const gameRoom = await this.gameRoomService.findGameRoomById(id);
             return res.status(200).send(gameRoom);
@@ -48,7 +48,7 @@ export class GameRoomController {
     }
 
     public deleteGameRoom = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
 
         try {
             await this.gameRoomService.deleteGameRoom(id);

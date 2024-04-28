@@ -9,7 +9,7 @@ import {
 
 import { Category } from './category.entity';
 
-@Entity({ name: 'Game_Room' })
+@Entity({ name: 'game_room' })
 export class GameRoom extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

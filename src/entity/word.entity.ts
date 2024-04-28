@@ -8,7 +8,7 @@ import {
   } from 'typeorm';
 import { Category } from './category.entity';
 
-  @Entity({ name: 'Word' })
+  @Entity({ name: 'word' })
   export class Word extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;

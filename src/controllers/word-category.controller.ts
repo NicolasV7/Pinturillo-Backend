@@ -18,7 +18,7 @@ export class WordCategoryController {
     }
 
     public findWordCategoryById = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
         try {
             const wordCategory = await this.wordCategoryService.findWordCategoryById(id);
             return res.status(200).send(wordCategory);
@@ -48,7 +48,7 @@ export class WordCategoryController {
     }
 
     public deleteWordCategory = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
 
         try {
             await this.wordCategoryService.deleteWordCategory(id);

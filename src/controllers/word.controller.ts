@@ -18,7 +18,7 @@ export class WordController {
     }
 
     public findWordById = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
         try {
             const word = await this.wordService.findWordById(id);
             return res.status(200).send(word);
@@ -28,7 +28,7 @@ export class WordController {
     }
 
     public getWordByName = async (req: any, res: any) => {
-        const text = req.params;
+        const {text} = req.params;
         try {
             const word = await this.wordService.getWordByName(text);
             return res.status(200).send(word);
@@ -38,8 +38,8 @@ export class WordController {
     }
 
     public createWord = async (req: any, res: any) => {
-        const word = req.body;
-        const text = req.body;
+        const {word} = req.body;
+        const {text} = req.body;
         try {
             await this.wordService.createWord(word);
             return res.status(201).send({message: `Word:${text} created successfully`});
@@ -59,8 +59,8 @@ export class WordController {
     }
 
     public deleteWord = async (req: any, res: any) => {
-        const id = req.params;
-        const text = req.params;
+        const {id} = req.params;
+        const {text} = req.body;
 
         try {
             await this.wordService.deleteWord(id);

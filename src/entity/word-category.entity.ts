@@ -10,7 +10,7 @@ import {
 import { Word } from './word.entity';
 import { Category } from './category.entity';
 
-@Entity({ name: 'WordCategory' })
+@Entity({ name: 'word_category' })
 export class WordCategory extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

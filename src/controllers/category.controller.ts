@@ -9,7 +9,7 @@ export class CategoryController {
 
     public getAllCategories = async (req: any, res: any) => {
         try {
-            const categories = await this.categoryService.getAllCategories();
+            const categories = await this.categoryService.getAllCategories();            
             return res.status(200).send(categories);
         } catch (error) {
             return res.status(500).send(error.message);
@@ -18,7 +18,7 @@ export class CategoryController {
     }
 
     public findCategoryById = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
         try {
             const category = await this.categoryService.findCategoryById(id);
             return res.status(200).send(category);
@@ -48,11 +48,12 @@ export class CategoryController {
     }
 
     public deleteCategory = async (req: any, res: any) => {
-        const id = req.params;
+        const {id} = req.params;
+        const {name} = req.body;
 
         try {
             await this.categoryService.deleteCategory(id);
-            return res.status(200).send({message: 'Category deleted successfully'});
+            return res.status(200).send({message: `Category:${name} deleted successfully`});
         } catch (error) {
             return res.status(500).send(error.message);
         }
