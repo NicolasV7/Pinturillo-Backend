@@ -1,16 +1,30 @@
--- public.songs definition
+-- DROP TABLE IF EXISTS WORD;
+-- DROP TABLE IF EXISTS CATEGORY;
+-- DROP TABLE IF EXISTS WORD_CATEGORY;
+-- DROP TABLE IF EXISTS GAME_ROOM;
 
--- Drop table
+CREATE TABLE WORD (
+	id serial PRIMARY KEY,
+	text varchar(35) NOT NULL,
+);
 
--- DROP TABLE public.songs;
+CREATE TABLE CATEGORY (
+	id serial PRIMARY KEY,
+	name varchar(255) NOT NULL,
+);
 
-CREATE TABLE public.songs (
-	id uuid NOT NULL,
-	title varchar(255) NOT NULL,
-	artist varchar(255) NOT NULL,
-	album varchar(255) NOT NULL,
-	"year" int4 NOT NULL,
-	genre varchar(255) NOT NULL,
-	duration interval NULL,
-	CONSTRAINT songs_pkey PRIMARY KEY (id)
+CREATE TABLE WORD_CATEGORY (
+	id serial PRIMARY KEY,
+	idWord integer NOT NULL,
+	idCategory integer NOT NULL,
+	FOREIGN KEY (idWord) REFERENCES WORD(id),
+	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
+);
+
+CREATE TABLE GAME_ROOM (
+	id serial PRIMARY KEY,
+	roomName varchar(100) NOT NULL,
+	state varchar(100) NOT NULL,
+	idCategory integer NOT NULL,
+	FOREIGN KEY (idCategory) REFERENCES CATEGORY(id),
 );
