@@ -23,7 +23,7 @@ export class CategoryService {
     const category = await this.categoryRepository.findById(id);
     if (!category) {
       return {
-        message: messages.category.notFound,
+        message: messages.category.notFoundById,
       };
     }
     return this.categoryRepository.findById(id);
@@ -47,7 +47,7 @@ export class CategoryService {
     const category = await this.categoryRepository.findById(id);
     if (!category) {
       return {
-        message: messages.category.notFound,
+        message: messages.category.notFoundById,
       };
     }
     return this.categoryRepository.delete(id);

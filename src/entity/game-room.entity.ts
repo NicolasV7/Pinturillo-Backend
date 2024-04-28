@@ -7,7 +7,7 @@ import {
   JoinColumn,
 } from "typeorm";
 
-import { Category } from "./category.entity";
+import { Category } from "@entity/category.entity";
 
 @Entity({ name: 'game_room' })
 export class GameRoom extends BaseEntity {

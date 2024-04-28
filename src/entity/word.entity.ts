@@ -6,7 +6,7 @@ import {
     ManyToMany,
     JoinTable,
   } from 'typeorm';
-import { Category } from './category.entity';
+import { Category } from '@entity/category.entity';
 
   @Entity({ name: 'word' })
   export class Word extends BaseEntity {

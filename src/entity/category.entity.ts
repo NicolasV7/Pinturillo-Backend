@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany } from 'typeorm';
-import { Word } from './word.entity';
+import { Word } from '@entity/word.entity';
 
 @Entity({ name: 'Category' })
 export class Category extends BaseEntity {

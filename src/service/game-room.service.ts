@@ -1,5 +1,5 @@
-import { GameRoomRepository } from "../repository/game-room.repository";
-import { CategoryRepository } from "../repositories/category.repository";
+import { GameRoomRepository } from "@repository/game-room.repository";
+import { CategoryRepository } from "@repository/category.repository";
 
 export class GameRoomService {
     private gameRoomRepository: GameRoomRepository;
@@ -26,7 +26,7 @@ export class GameRoomService {
     }
 
     async createGameRoom(gameRoom: any) {
-        const idCategory = await this.categoryRepository.findCategoryById(gameRoom.idCategory);
+        const idCategory = await this.categoryRepository.findById(gameRoom.idCategory);
         if (idCategory) {
             return {
                 message: 'Game Room already exists'
