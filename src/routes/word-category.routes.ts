@@ -1,5 +1,5 @@
-import express = require("express");
-import { WordCategoryController } from "../controllers/word-category.controller";
+import * as express from "express";
+import { WordCategoryController } from "../controller/word-category.controller";
 
 export const WordCategoryRouter = express.Router();
 

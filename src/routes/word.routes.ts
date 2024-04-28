@@ -1,5 +1,5 @@
-import express = require("express");
-import { WordController } from "../controllers/word.controller";
+import * as express from "express";
+import { WordController } from "../controller/word.controller";
 
 export const WordRouter = express.Router();
 

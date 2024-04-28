@@ -1,5 +1,5 @@
-import express = require("express");
-import { GameRoomController } from "../controllers/game-room.controller";
+import * as express from "express";
+import { GameRoomController } from "../controller/game-room.controller";
 
 export const GameRoomRouter = express.Router();
 
