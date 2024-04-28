@@ -1,8 +1,8 @@
-import { AppDataSource } from "./data-source";
-import * as dotenv from "dotenv";
+import { AppDataSource } from './data-source';
+import * as dotenv from 'dotenv';
 
-import "reflect-metadata";
-import { errorHandler } from "./middleware/errorHandler"
+import 'reflect-metadata';
+import { errorHandler } from './middleware/errorHandler'
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger'
 const cors = require('cors');
@@ -21,8 +21,8 @@ app.use('/ws', websocketRouter);
 AppDataSource.initialize()
   .then(async () => {
     app.listen(3000, () => {
-      console.log("Server is running on http://localhost:" + PORT);
+      console.log('Server is running on http://localhost:' + PORT);
     });
-    console.log("Data Source has been initialized!");
+    console.log('Data Source has been initialized!');
   })
   .catch((error) => console.log(error));

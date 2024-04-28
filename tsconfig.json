@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@controller/*": ["../controller/*"],
+    },
     "lib": ["es6"],
     "target": "es6",
     "module": "commonjs",
@@ -7,6 +10,6 @@
     "outDir": "./build",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true
+    "sourceMap": true,
   }
 }
