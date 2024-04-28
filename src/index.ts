@@ -5,7 +5,12 @@ import "reflect-metadata";
 import { errorHandler } from "./middleware/errorHandler";
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger'
+
 import { CategoryRouter } from "./routes/category.routes";
+import { GameRoomRouter } from "./routes/game-room.routes";
+import { WordRouter } from "./routes/word.routes";
+import { WordCategoryRouter } from "./routes/word-category.routes";
+
 const cors = require('cors');
 dotenv.config();
 
@@ -18,6 +23,9 @@ app.use(express.json());
 app.use(errorHandler);
 
 app.use('/category', CategoryRouter);
+app.use('/game-room', GameRoomRouter);
+app.use('/word', WordRouter);
+app.use('/word-category', WordCategoryRouter);
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
