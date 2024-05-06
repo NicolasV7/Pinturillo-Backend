@@ -6,7 +6,7 @@ import { messages } from "@assets/messages";
 import { Word } from "@/entity/word.entity";
 import { WordDTO } from "@/dto/word.dto";
 import { WordCategoryService } from "@service/word-category.service";
-import { validateWord } from "@schemas/word.schema";
+import { validateWordCategory } from "@schemas/word-category.schema";
 
 export class WordCategoryController {
     private wordCategoryService = new WordCategoryService();
@@ -35,16 +35,42 @@ export class WordCategoryController {
     };
 
     public createWordCategory = async (req: Request, res: Response) => {
-        const wordDTO: WordDTO = req.body;
-        const { error } = validateWord(wordDTO);
-        if (error) return res.status(400).send(error.details[0].message);
+        const wordCategory = req.body;
+        const { error } = validateWordCategory(wordCategory);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
 
-        const wordCategory = new Word();
-        wordCategory.id = uuidv4();
-        wordCategory.text = wordDTO.text as string;
+        try {
+            const wordCategoryData = await this.wordCategoryService.createWordCategory(wordCategory);
+            return res.status(201).send(wordCategoryData);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
 
-        //Pausing here
-    };
+    public updateWordCategory = async (req: Request, res: Response) => {
+        const wordCategory = req.body;
+        const { error } = validateWordCategory(wordCategory);
+        if (error) {
+            return res.status(400).send(error.details[0].message);
+        }
 
+        try {
+            const wordCategoryData = await this.wordCategoryService.updateWordCategory(wordCategory);
+            return res.status(200).send(wordCategoryData);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
 
+    public deleteWordCategory = async (req: Request, res: Response) => {
+        const { id } = req.params;
+        try {
+            await this.wordCategoryService.deleteWordCategory(id);
+            return res.status(200).send(messages.wordCategory.deleted);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
 }
