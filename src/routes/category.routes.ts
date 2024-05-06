@@ -10,4 +10,4 @@ CategoryRouter.get('/getById/:id', categoryController.getCategoryById);
 CategoryRouter.get('/getByName/:name', categoryController.getCategoryByName);
 CategoryRouter.post('/create', categoryController.createCategory);
 CategoryRouter.delete('/delete/:id', categoryController.deleteCategory);
-CategoryRouter.put('/update', categoryController.updateCategory);
+CategoryRouter.put('/update/:id', categoryController.updateCategory);

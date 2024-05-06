@@ -8,5 +8,5 @@ const wordCategoryController = new WordCategoryController();
 WordCategoryRouter.get("/getAll", wordCategoryController.getAllWordsCategories);
 WordCategoryRouter.get("/getById/:id", wordCategoryController.getWordCategoryById);
 WordCategoryRouter.post("/create", wordCategoryController.createWordCategory);
-WordCategoryRouter.put("/update", wordCategoryController.updateWordCategory);
+WordCategoryRouter.put("/update/:id", wordCategoryController.updateWordCategory);
 WordCategoryRouter.delete("/delete/:id", wordCategoryController.deleteWordCategory);

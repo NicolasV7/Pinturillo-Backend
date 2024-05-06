@@ -51,16 +51,16 @@ export class WordController {
     };
 
     public updateWord = async (req: Request, res: Response) => {
+        const { id } = req.params;
         const wordDTO: WordDTO = req.body;
         const { error } = validateWord(wordDTO);
         if (error) return res.status(400).send(error.details[0].message);
 
         const word = new Word();
-        word.id = req.params.id;
         word.text = wordDTO.text as string;
 
         try {
-            await this.wordService.updateWord(word);
+            await this.wordService.updateWord(id, word);
             return res.status(200).send(messages.word.updated);
         } catch (error) {
             return res.status(500).send(error.message);

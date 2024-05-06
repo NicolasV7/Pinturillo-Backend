@@ -53,13 +53,14 @@ export class CategoryService {
     return await this.categoryRepository.delete(id);
   }
 
-  async update(category: Category) {
-    const categoryUpdate = await this.categoryRepository.findById(category.id);
-    if (!categoryUpdate) {
+  async update(id: string, category: Category) {
+    const categoryData = await this.categoryRepository.findById(id);
+    if
+      (!categoryData) {
       return {
-        message: messages.category.notFound,
+        message: messages.category.notFoundById,
       };
     }
-    return await this.categoryRepository.update(category);
+    return await this.categoryRepository.update(id, category);
   }
 }

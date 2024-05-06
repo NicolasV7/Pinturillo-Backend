@@ -8,7 +8,7 @@ const wordController = new WordController();
 WordRouter.get("/getAll", wordController.getAllWords);
 WordRouter.get("/getById/:id", wordController.getWordById);
 WordRouter.post("/create", wordController.createWord);
-WordRouter.put("/update", wordController.updateWord);
+WordRouter.put("/update/:id", wordController.updateWord);
 WordRouter.delete("/delete/:id", wordController.deleteWord);
 
 

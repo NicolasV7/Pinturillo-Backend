@@ -16,8 +16,8 @@ export class WordRepository {
         return this.dataSource.save(word);
     }
 
-    async updateWord(word: Word){
-        return this.dataSource.update(word.id, word);
+    async updateWord(string: string, word: Word){
+        return this.dataSource.update(string, word);
     }
 
     async deleteWord(id: string){

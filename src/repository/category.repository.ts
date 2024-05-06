@@ -24,7 +24,7 @@ export class CategoryRepository {
     return this.dataSource.delete(id);
   }
 
-  async update(category: Category) {
-    return this.dataSource.update(category.id, category);
+  async update(id: string, category: Category) {
+    return this.dataSource.update(id, category);
   }
 }

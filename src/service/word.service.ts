@@ -34,14 +34,14 @@ export class WordService {
         return await this.wordRepository.createWord(word);
     }
 
-    async updateWord(word: Word) {
-        const wordUpdate = await this.wordRepository.findWordById(word.id);
-        if (!wordUpdate) {
+    async updateWord(id: string, word: Word) {
+        const wordData = await this.wordRepository.findWordById(id);
+        if (!wordData) {
             return {
-                message: messages.word.notFound,
+                message: messages.word.notFoundById,
             };
         }
-        return await this.wordRepository.updateWord(word);
+        return await this.wordRepository.updateWord(id, word);
     }
 
     async deleteWord(id: string) {

@@ -41,13 +41,14 @@ export class WordCategoryController {
 
         try {
             const wordCategoryData = await this.wordCategoryService.createWordCategory(wordCategory);
-            return res.status(201).send(wordCategoryData);
+            return res.status(201).send(messages.wordCategory.created);
         } catch (error) {
             return res.status(500).send(error.message);
         }
     }
 
     public updateWordCategory = async (req: Request, res: Response) => {
+        const { id } = req.params;
         const wordCategory = req.body;
         const { error } = validateWordCategory(wordCategory);
         if (error) {
@@ -55,8 +56,8 @@ export class WordCategoryController {
         }
 
         try {
-            const wordCategoryData = await this.wordCategoryService.updateWordCategory(wordCategory);
-            return res.status(200).send(wordCategoryData);
+            await this.wordCategoryService.updateWordCategory(id, wordCategory);
+            return res.status(200).send(messages.wordCategory.updated);
         } catch (error) {
             return res.status(500).send(error.message);
         }

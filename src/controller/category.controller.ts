@@ -71,16 +71,17 @@ export class CategoryController {
   };
 
   public updateCategory = async (req: Request, res: Response) => {
+    const { id } = req.params;
     const categoryDTO: CategoryDTO = req.body;
     const { error } = validateCategory(categoryDTO);
     if (error) return res.status(400).send(error.details[0].message);
 
     const category = new Category();
-    category.id = categoryDTO.id as string;
+    category.id = id;
     category.name = categoryDTO.name as string;
 
     try {
-      await this.categoryService.update(category);
+      await this.categoryService.update(id, category);
       return res.status(200).send(messages.category.updated);
     } catch (error) {
       return res.status(500).send(error.message);

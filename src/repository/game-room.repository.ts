@@ -9,8 +9,8 @@ export class GameRoomRepository {
     return this.dataSource.find();
   }
 
-  async updateGameRoom(gameRoom: GameRoom){
-    return this.dataSource.update(gameRoom.id, gameRoom);
+  async updateGameRoom(id: string, gameRoom: GameRoom){
+    return this.dataSource.update(id, gameRoom);
   }
 
   async createGameRoom(gameRoom: GameRoom){

@@ -17,8 +17,8 @@ export class WordCategoryRepository {
         return this.dataSource.save(wordCategory);
     }
 
-    async updateWordCategory(wordCategory: WordCategory){
-        return this.dataSource.update(wordCategory.id, wordCategory);
+    async updateWordCategory(id: string, wordCategory: WordCategory){
+        return this.dataSource.update(id, wordCategory);
     }
 
     async deleteWordCategory(id: string){

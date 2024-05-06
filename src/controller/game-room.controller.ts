@@ -48,6 +48,7 @@ export class GameRoomController {
   };
 
   public updateGameRoom = async (req: Request, res: Response) => {
+    const { id } = req.params;
     const gameRoom = req.body;
     const { error } = validateGameRoom(gameRoom);
     if (error) {
@@ -55,7 +56,7 @@ export class GameRoomController {
     }
 
     try {
-      await this.gameRoomservice.updateGameRoom(gameRoom);
+      await this.gameRoomservice.updateGameRoom(id, gameRoom);
       return res.status(200).send(messages.gameRoom.updated);
     } catch (error) {
       return res.status(500).send(error.message);

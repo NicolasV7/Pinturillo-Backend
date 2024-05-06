@@ -38,15 +38,15 @@ export class GameRoomService {
         return await this.gameRoomRepository.createGameRoom(gameRoom);
     }
 
-    async updateGameRoom(gameRoom: GameRoom) {
-        const gameRoomData = await this.gameRoomRepository.findGameRoomById(gameRoom.id);
+    async updateGameRoom(id: string, gameRoom: GameRoom) {
+        const gameRoomData = await this.gameRoomRepository.findGameRoomById(id);
         if (!gameRoomData) {
             return {
                 message: messages.gameRoom.notFound,
             };
         }
 
-        return await this.gameRoomRepository.updateGameRoom(gameRoom);
+        return await this.gameRoomRepository.updateGameRoom(id, gameRoom);
     }
 
     async deleteGameRoom(id: string) {
