@@ -1,5 +1,5 @@
 import * as express from "express";
-import { WordController } from "../controller/word.controller";
+import { WordController } from "@controller/word.controller";
 
 export const WordRouter = express.Router();
 
