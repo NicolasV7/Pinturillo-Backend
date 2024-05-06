@@ -26,10 +26,8 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
-//not working
 app.use('/api/v1/category', CategoryRouter);
 app.use('/api/v1/game-room', GameRoomRouter);
-//work on this
 app.use('/api/v1/word', WordRouter);
 app.use('/api/v1/word-category', WordCategoryRouter);
 

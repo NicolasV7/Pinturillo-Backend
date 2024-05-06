@@ -1,19 +1,32 @@
-import { GameRoomRepository } from "../repository/game-room.repository";
-import { WordCategory } from "../entity/word-category.entity";
-import { WordCategoryRepository } from "../repository/word-category.repository";
-import { WordService } from "../service/word.service";
-import { Word } from "../entity/word.entity";
+const WebSocket = require("ws");
+export class SocketController {
+  public static rooms = {};
 
-const webSocket = require('ws');
-
-export class SocketController{
-
-  asycn joinGameRoom(gameRoomId: string, ws: webSocket){
-
-    
-
+  joinRoom(ws, roomName) {
+    if (!SocketController.rooms[roomName]) {
+      SocketController.rooms[roomName] = new Set();
+    }
+    SocketController.rooms[roomName].add(ws);
   }
 
+  leaveRoom(ws, roomName) {
+    if (SocketController.rooms[roomName]) {
+      SocketController.rooms[roomName].delete(ws);
+      if (SocketController.rooms[roomName].size === 0) {
+        delete SocketController.rooms[roomName];
+      }
+    }
+  }
 
+  sendMessageToRoom(roomName, message) {
+    if (SocketController.rooms[roomName]) {
+      for (const client of SocketController.rooms[roomName]) {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(message);
+        }
+      }
+    }
+  }
 
+  sendMessage() {}
 }

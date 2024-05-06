@@ -28,7 +28,7 @@ export class GameRoomService {
     }
 
     async createGameRoom(gameRoom: GameRoom) {
-        const category = await this.categoryRepository.findById(gameRoom.idCategory.id);
+        const category = await this.categoryRepository.findById(gameRoom.id_category.id);
         if (!category) {
             return {
                 message: messages.category.notFound,

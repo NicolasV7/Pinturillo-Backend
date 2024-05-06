@@ -15,7 +15,7 @@ export class GameRoom extends BaseEntity {
   id: string;
 
   @Column({ type: "varchar", nullable: false })
-  name: string;
+  room_name: string;
 
   @Column({
     type: "varchar",
@@ -27,5 +27,5 @@ export class GameRoom extends BaseEntity {
 
   @ManyToOne(() => Category, (category) => category.id)
   @JoinColumn({ name: "id_category" })
-  idCategory: Category;
+  id_category: Category;
 }
