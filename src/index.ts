@@ -22,13 +22,15 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
-app.use('/category', CategoryRouter);
-app.use('/game-room', GameRoomRouter);
-app.use('/word', WordRouter);
-app.use('/word-category', WordCategoryRouter);
+//not working
+app.use('/api/v1/category', CategoryRouter);
+app.use('/api/v1/game-room', GameRoomRouter);
+//work on this
+app.use('/api/v1/word', WordRouter);
+app.use('/api/v1/word-category', WordCategoryRouter);
 
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 AppDataSource.initialize()
   .then(async () => {
     app.listen(3000, () => {
