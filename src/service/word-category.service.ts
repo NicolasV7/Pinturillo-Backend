@@ -1,8 +1,8 @@
-import { messages } from "@/assets/messages";
-import { WordCategory } from "@entity/word-category.entity";
-import { CategoryRepository } from "@repository/category.repository";
-import { WordCategoryRepository } from "@repository/word-category.repository";
-import { WordRepository } from "@repository/word.repository";
+import { messages } from "../assets/messages";
+import { WordCategory } from "../entity/word-category.entity";
+import { CategoryRepository } from "../repository/category.repository";
+import { WordCategoryRepository } from "../repository/word-category.repository";
+import { WordRepository } from "../repository/word.repository";
 
 export class WordCategoryService {
   private wordCategoryRepository = new WordCategoryRepository();

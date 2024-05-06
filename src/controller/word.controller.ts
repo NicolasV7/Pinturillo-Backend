@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
-import { messages } from "@assets/messages";
-import { Word } from "@entity/word.entity";
-import { WordDTO } from "@/dto/word.dto";
-import { WordService } from "@service/word.service";
-import { validateWord } from "@schemas/word.schema";
+import { messages } from "../assets/messages";
+import { Word } from "../entity/word.entity";
+import { WordDTO } from "../dto/word.dto";
+import { WordService } from "../service/word.service";
+import { validateWord } from "../schemas/word.schema";
 
 export class WordController {
     private wordService = new WordService();

@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
-import { messages } from "@assets/messages";
-import { GameRoomService } from "@service/game-room.service";
-import { validateGameRoom } from "@schemas/game-room.schema";
+import { messages } from "../assets/messages";
+import { GameRoomService } from "../service/game-room.service";
+import { validateGameRoom } from "../schemas/game-room.schema";
 
 export class GameRoomController {
   private gameRoomservice = new GameRoomService();

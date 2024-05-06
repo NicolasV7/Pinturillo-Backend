@@ -1,7 +1,7 @@
-import { messages } from "@assets/messages";
-import { GameRoom } from "@entity/game-room.entity";
-import { GameRoomRepository } from "@repository/game-room.repository";
-import { CategoryRepository } from "@repository/category.repository";
+import { messages } from "../assets/messages";
+import { GameRoom } from "../entity/game-room.entity";
+import { GameRoomRepository } from "../repository/game-room.repository";
+import { CategoryRepository } from "../repository/category.repository";
 
 export class GameRoomService {
     private gameRoomRepository = new GameRoomRepository();

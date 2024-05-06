@@ -1,5 +1,5 @@
-import { Category } from "@entity/category.entity";
-import { AppDataSource } from "@/data-source";
+import { Category } from "../entity/category.entity";
+import { AppDataSource } from "../data-source";
 
 export class CategoryRepository {
   private dataSource = AppDataSource.getRepository(Category);

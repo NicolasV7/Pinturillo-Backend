@@ -2,14 +2,14 @@ import { AppDataSource } from './data-source';
 import * as dotenv from 'dotenv';
 
 import 'reflect-metadata';
-import { errorHandler } from '@middleware/errorHandler'
+import { errorHandler } from './middleware/errorHandler'
 import * as swaggerUi from 'swagger-ui-express';
 import * as swaggerSpec from './swagger';
 
-import { CategoryRouter } from "@routes/category.routes";
-import { GameRoomRouter } from "@routes/game-room.routes";
-import { WordRouter } from "@routes/word.routes";
-import { WordCategoryRouter } from "@routes/word-category.routes";
+import { CategoryRouter } from "./routes/category.routes";
+import { GameRoomRouter } from "./routes/game-room.routes";
+import { WordRouter } from "./routes/word.routes";
+import { WordCategoryRouter } from "./routes/word-category.routes";
 
 const cors = require('cors');
 dotenv.config();

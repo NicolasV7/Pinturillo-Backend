@@ -1,6 +1,6 @@
 
-import { AppDataSource } from "@/data-source";
-import { GameRoom } from "@entity/game-room.entity";
+import { AppDataSource } from "../data-source";
+import { GameRoom } from "../entity/game-room.entity";
 
 export class GameRoomRepository {
   private dataSource = AppDataSource.getRepository(GameRoom);

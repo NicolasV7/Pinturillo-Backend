@@ -1,6 +1,6 @@
 
-import { AppDataSource } from "@/data-source";
-import { WordCategory } from "@entity/word-category.entity";
+import { AppDataSource } from "../data-source";
+import { WordCategory } from "../entity/word-category.entity";
 
 export class WordCategoryRepository {
     private dataSource = AppDataSource.getRepository(WordCategory);

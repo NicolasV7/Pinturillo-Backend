@@ -1,5 +1,5 @@
-import { AppDataSource } from "@/data-source";
-import { Word } from "@entity/word.entity";
+import { AppDataSource } from "../data-source";
+import { Word } from "../entity/word.entity";
 
 export class WordRepository {
     private dataSource = AppDataSource.getRepository(Word);

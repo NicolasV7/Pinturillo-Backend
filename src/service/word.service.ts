@@ -1,6 +1,6 @@
-import { messages } from "@/assets/messages";
-import { Word } from "@entity/word.entity";
-import { WordRepository } from "@repository/word.repository";
+import { messages } from "../assets/messages";
+import { Word } from "../entity/word.entity";
+import { WordRepository } from "../repository/word.repository";
 
 
 export class WordService {

@@ -1,6 +1,6 @@
-import { messages } from '@assets/messages';
-import { Category } from '@entity/category.entity';
-import { CategoryRepository } from '@repository/category.repository';
+import { messages } from '../assets/messages';
+import { Category } from '../entity/category.entity';
+import { CategoryRepository } from '../repository/category.repository';
 
 export class CategoryService {
   private categoryRepository = new CategoryRepository();

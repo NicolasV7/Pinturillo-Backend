@@ -7,8 +7,8 @@ import {
   ManyToOne,
 } from "typeorm";
 
-import { Word } from "@entity/word.entity";
-import { Category } from "@entity/category.entity";
+import { Word } from "./word.entity";
+import { Category } from "./category.entity";
 
 @Entity({ name: "word_category" })
 export class WordCategory extends BaseEntity {
