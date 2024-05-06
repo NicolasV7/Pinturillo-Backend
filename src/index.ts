@@ -14,9 +14,13 @@ import { WordCategoryRouter } from "./routes/word-category.routes";
 const cors = require('cors');
 dotenv.config();
 
+const logger = require('morgan');
+
 const { PORT = 3000 } = process.env;
 var express = require('express');
 var app = express();
+
+app.use(logger('dev'));
 
 app.use(cors());
 app.use(express.json());
