@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { Word } from "./word.entity";
 
-@Entity({ name: "Category" })
+@Entity({ name: "category" })
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
