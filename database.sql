@@ -25,7 +25,7 @@ CREATE TABLE GAME_ROOM (
 CREATE TABLE WORD_CATEGORY (
 	id uuid DEFAULT uuid_generate_v4 () PRIMARY KEY,
 	id_category uuid,
-	id_word uuid,
+	id_word uuid
 );
 
 ALTER TABLE WORD_CATEGORY
