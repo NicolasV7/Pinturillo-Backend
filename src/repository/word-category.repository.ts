@@ -24,4 +24,8 @@ export class WordCategoryRepository {
     async deleteWordCategory(id: string){
         return this.dataSource.delete(id);
     }
+
+    async findWordCategoryByWordIdAndCategoryId(id_word: string, id_category: string){
+        return this.dataSource.findOneBy({ id_word, id_category });
+    }
 }
