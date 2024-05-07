@@ -91,12 +91,12 @@ module.exports = (expressWs) => {
       try {
         const asignWord = await socketController.asignWordToGuess(idRoom);
         const users = Array.from(SocketController.rooms[idRoom]);
-        let user = "";
+        let constUser = "";
 
         const userPromise = users.map(async (user: any) => {
           const turn = await socketController.playerTurn(idRoom, user.ws);
           if (user.ws.readyState === ws.OPEN && turn === 1) {
-            user = user.userName;
+            constUser = user.userName;
             solveWord.push(user.ws);
             user.ws.send(`[+] Your turn to play`);
             user.ws.send(`[+] Word to draw: ${asignWord}`);

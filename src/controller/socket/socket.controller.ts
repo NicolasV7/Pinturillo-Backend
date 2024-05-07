@@ -105,15 +105,9 @@ export class SocketController {
       const randomWord = words.categories[random];
 
       const word = new WordService();
-      const wordToGuess = await word.findWordById(randomWord.id);
+      const selectWord: Word = await word.findWordByText(randomWord.name);
+      this.asignWord = selectWord.text;
 
-      if(typeof wordToGuess === 'string'){
-        this.asignWord = wordToGuess;
-      }else if (wordToGuess instanceof Word){
-        this.asignWord = wordToGuess.text;
-      }else{
-        throw new Error(messages.word.notFound);
-      }
     }
     return;
   }
