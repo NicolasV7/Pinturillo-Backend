@@ -28,4 +28,12 @@ export class WordCategoryRepository {
     async findWordCategoryByWordIdAndCategoryId(id_word: string, id_category: string){
         return this.dataSource.findOneBy({ id_word, id_category });
     }
+
+    async findWordCategoryByIdWord(id_word: string){
+        return this.dataSource.findOneBy({ id_word });
+    }
+
+    async findWordCategoryByIdCategory(id_category: string){
+        return this.dataSource.findOneBy({ id_category });
+    }
 }

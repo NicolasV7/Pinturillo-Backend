@@ -36,6 +36,40 @@ export class WordCategoryService {
     };
   }
 
+  async findWordCategoryByIdWord(id_word: string) {
+    const wordCategoryData =
+      await this.wordCategoryRepository.findWordCategoryByIdWord(id_word);
+    if (!wordCategoryData) {
+      return {
+        status: 404,
+        message: messages.wordCategory.notFound,
+      };
+    }
+
+    const wordCategory = await this.wordCategoryRepository.findWordCategoryByIdWord(id_word);
+    return {
+      status: 200,
+      message: wordCategory,
+    };
+  }
+
+  async findWordCategoryByIdCategory(id_category: string) {
+    const wordCategoryData =
+      await this.wordCategoryRepository.findWordCategoryByIdCategory(id_category);
+    if (!wordCategoryData) {
+      return {
+        status: 404,
+        message: messages.wordCategory.notFound,
+      };
+    }
+
+    const wordCategory = await this.wordCategoryRepository.findWordCategoryByIdCategory(id_category);
+    return {
+      status: 200,
+      message: wordCategory,
+    };
+  }
+
   async createWordCategory(wordCategory: WordCategory) {
     const idWord = await this.wordRepository.findWordById(wordCategory.id_word);
     const idCategory = await this.categoryRepository.findById(wordCategory.id_category);

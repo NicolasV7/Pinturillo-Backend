@@ -1,4 +1,5 @@
 import { not } from "joi";
+import { start } from "repl";
 
 export const messages = {
   category: {
@@ -16,6 +17,9 @@ export const messages = {
     created: "Game Room created",
     updated: "Game Room updated",
     deleted: "Game Room deleted",
+    started: "En curso",
+    finished: "Finalizado",
+    notStarted: "Sin iniciar",
   },
   wordCategory: {
     notFound: "Word-Category not found",
