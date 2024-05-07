@@ -1,6 +1,9 @@
 import { GameRoomRepository } from "../../repository/game-room.repository";
 import { WordCategoryRepository } from "../../repository/word-category.repository";
 import { messages } from "../../assets/messages";
+import { WordService } from "../../service/word.service";
+import { Word } from "../../entity/word.entity";
+
 const WebSocket = require("ws");
 
 export class SocketController {
@@ -92,11 +95,72 @@ export class SocketController {
   async asignWordToGuess(roomId) {
     if (SocketController.rooms[roomId]) {
       const gameRoom = new GameRoomRepository();
-      const room = await (gameRoom.findGameRoomById(roomId));
+      const room = await gameRoom.findGameRoomById(roomId);
       const category = room.id_category.toString();
 
       const wordCategory = new WordCategoryRepository();
       const words = await wordCategory.findWordCategoryByIdCategory(category);
+
+      const random = Math.floor(Math.random() * words.categories.length);
+      const randomWord = words.categories[random];
+
+      const word = new WordService();
+      const wordToGuess = await word.findWordById(randomWord.id);
+
+      if(typeof wordToGuess === 'string'){
+        this.asignWord = wordToGuess;
+      }else if (wordToGuess instanceof Word){
+        this.asignWord = wordToGuess.text;
+      }else{
+        throw new Error(messages.word.notFound);
+      }
+    }
+    return;
+  }
+
+  async score(roomId, scorePosition, ws, time){
+    if (SocketController.rooms[roomId]) {
+      for(const user of SocketController.rooms[roomId]){
+        if(user.ws === ws){
+          const score = (SocketController.rooms[roomId].size - scorePosition) * 10;
+          const maxTime = 90;
+
+          const timeScore = Math.max(0, 1 - ((maxTime - time) / maxTime));
+          const finalScore = Math.floor(timeScore*100);
+
+          const totalScore = score + finalScore;
+          user.score = totalScore;
+
+          return totalScore;
+        }
+      }
+    }
+  }
+
+  async endTurn(roomId){
+    if (SocketController.rooms[roomId]) {
+      for(const user of this.userTurn){
+        if(user.turn == 1){
+          user.turn
+        }else{
+          user.turn -= 1;
+        }
+      }
+      return this.userTurn;
+    }
+  }
+
+  async endGame(roomId, ws){
+    this.asignWord = "";
+    if(SocketController.rooms[roomId]){
+      const users = Array.from(SocketController.rooms[roomId]);
+      const result = users.map((user: any) => {
+        return { userName: user.userName, score: user.score };
+      });
+      result.sort((a: any, b: any) => b.score - a.score);
+      result.forEach((result: any, index: number) => {
+        ws.send(`Puesto ${index + 1}: ${result.userName} con ${result.score} puntos`);
+      });
     }
   }
 }

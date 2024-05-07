@@ -20,12 +20,16 @@ const logger = require('morgan');
 const { PORT = 3000 } = process.env;
 var express = require('express');
 var app = express();
+const wsInstance = require('express-ws')(app);
+const ws = require('./routes/socket/socket.routes')(wsInstance);
 
 app.use(logger('dev'));
 
 app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
+
+app.use('/api/v1/ws', ws);
 
 app.use('/api/v1', CategoryRouter, GameRoomRouter, WordRouter, WordCategoryRouter);
 
