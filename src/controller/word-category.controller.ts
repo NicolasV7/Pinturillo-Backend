@@ -17,7 +17,7 @@ export class WordCategoryController {
         const { id } = req.params;
         try {
             const wordCategory = await this.wordCategoryService.findWordCategoryById(id);
-            return res.status(200).send(wordCategory);
+            return res.status(wordCategory.status).send(wordCategory.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -40,8 +40,8 @@ export class WordCategoryController {
         }
 
         try {
-            const wordCategoryData = await this.wordCategoryService.createWordCategory(wordCategory);
-            return res.status(201).send(messages.wordCategory.created);
+            const createdWordCategory = await this.wordCategoryService.createWordCategory(wordCategory);
+            return res.status(createdWordCategory.status).send(createdWordCategory.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -56,8 +56,8 @@ export class WordCategoryController {
         }
 
         try {
-            await this.wordCategoryService.updateWordCategory(id, wordCategory);
-            return res.status(200).send(messages.wordCategory.updated);
+            const updatedWordCategory = await this.wordCategoryService.updateWordCategory(id, wordCategory);
+            return res.status(updatedWordCategory.status).send(updatedWordCategory.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -66,8 +66,8 @@ export class WordCategoryController {
     public deleteWordCategory = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            await this.wordCategoryService.deleteWordCategory(id);
-            return res.status(200).send(messages.wordCategory.deleted);
+            const deletedWordCategory = await this.wordCategoryService.deleteWordCategory(id);
+            return res.status(deletedWordCategory.status).send(deletedWordCategory.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }

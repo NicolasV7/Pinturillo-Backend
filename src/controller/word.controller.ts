@@ -18,7 +18,7 @@ export class WordController {
         const { text } = req.params;
         try {
             const word = await this.wordService.findWordByText(text);
-            return res.status(200).send(word);
+            return res.status(word.status).send(word.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -28,7 +28,7 @@ export class WordController {
         const { id } = req.params;
         try {
             const word = await this.wordService.findWordById(id);
-            return res.status(200).send(word);
+            return res.status(word.status).send(word.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -53,8 +53,8 @@ export class WordController {
         word.text = wordDTO.text as string;
 
         try {
-            await this.wordService.createWord(word);
-            return res.status(201).send(messages.word.created);
+            const createdWord = await this.wordService.createWord(word);
+            return res.status(createdWord.status).send(createdWord.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -70,8 +70,8 @@ export class WordController {
         word.text = wordDTO.text as string;
 
         try {
-            await this.wordService.updateWord(id, word);
-            return res.status(200).send(messages.word.updated);
+            const updatedWord = await this.wordService.updateWord(id, word);
+            return res.status(updatedWord.status).send(updatedWord.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }
@@ -80,8 +80,8 @@ export class WordController {
     public deleteWord = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {
-            await this.wordService.deleteWord(id);
-            return res.status(200).send(messages.word.deleted);
+            const deletedWord = await this.wordService.deleteWord(id);
+            return res.status(deletedWord.status).send(deletedWord.message);
         } catch (error) {
             return res.status(500).send(error.message);
         }

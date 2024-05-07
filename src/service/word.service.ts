@@ -1,3 +1,4 @@
+import { start } from "repl";
 import { messages } from "../assets/messages";
 import { Word } from "../entity/word.entity";
 import { WordRepository } from "../repository/word.repository";
@@ -18,43 +19,68 @@ export class WordService {
         const wordData = await this.wordRepository.findWordByText(text);
         if (!wordData) {
             return {
+                status: 404,
                 message: messages.word.notFoundByText,
             };
         }
-        return await this.wordRepository.findWordByText(text);
+        const word = await this.wordRepository.findWordByText(text);
+        return {
+            status: 200,
+            message: word,
+        };
     }
     
     async findWordById(id: string) {
         const wordData = await this.wordRepository.findWordById(id);
         if (!wordData) {
             return {
+                status: 404,
                 message: messages.word.notFoundById,
             };
         }
-        return await this.wordRepository.findWordById(id);
+        const word = await this.wordRepository.findWordById(id);
+        return {
+            status: 200,
+            message: word,
+        };
     }
 
     async createWord(word: Word) {
         const wordCreate = await this.wordRepository.findWordByText(word.text);
         if (wordCreate) {
             return {
+                status: 409,
                 message: messages.word.alreadyExists,
             };
         }
-        return await this.wordRepository.createWord(word);
+
+        await this.wordRepository.createWord(word); 
+        return {
+            status: 201,
+            message: messages.word.created,
+        };
     }
 
     async updateWord(id: string, word: Word) {
         const wordData = await this.wordRepository.findWordById(id);
         if (!wordData) {
             return {
+                status: 404,
                 message: messages.word.notFoundById,
             };
         }
-        return await this.wordRepository.updateWord(id, word);
+        await this.wordRepository.updateWord(id, word);
+        return {
+            status: 200,
+            message: messages.word.updated,
+        };
     }
 
     async deleteWord(id: string) {
-        return await this.wordRepository.deleteWord(id);
+        await this.wordRepository.deleteWord(id);
+        return {
+            status: 200,
+            message: messages.word.deleted,
+        };
     }
 }

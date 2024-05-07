@@ -24,45 +24,67 @@ export class WordCategoryService {
       await this.wordCategoryRepository.findWordCategoryById(id);
     if (!wordCategoryData) {
       return {
+        sutatus: 404,
         message: messages.wordCategory.notFound,
       };
     }
 
-    return await this.wordCategoryRepository.findWordCategoryById(id);
+    const wordCategory = await this.wordCategoryRepository.findWordCategoryById(id);
+    return {
+      status: 200,
+      message: wordCategory,
+    };
   }
 
   async createWordCategory(wordCategory: WordCategory) {
     const idWord = await this.wordRepository.findWordById(wordCategory.id_word);
-    const idCategory = await this.categoryRepository.findById(
-      wordCategory.id_category
-    );
+    const idCategory = await this.categoryRepository.findById(wordCategory.id_category);
+
     if (!idWord || !idCategory) {
       return {
+        status: 404,
         message: messages.wordCategory.notFound,
       };
     }
-    if (await this.wordCategoryRepository.findWordCategoryById(wordCategory.id)) {
+    
+    if (idWord && idCategory) {
       return {
+        status: 409,
         message: messages.wordCategory.alreadyExists,
       };
     }
 
-    return await this.wordCategoryRepository.createWordCategory(wordCategory);
+    await this.wordCategoryRepository.createWordCategory(wordCategory);
+    return {
+      status: 201,
+      message: messages.wordCategory.created,
+    };
   }
+
+  //? Fix this update method
 
   async updateWordCategory(id: string, wordCategory: WordCategory) {
     const wordCategoryData =
       await this.wordCategoryRepository.findWordCategoryById(id);
     if (!wordCategoryData) {
       return {
+        status: 404,
         message: messages.wordCategory.notFound,
       };
     }
 
-    return await this.wordCategoryRepository.updateWordCategory(id, wordCategory);
+    await this.wordCategoryRepository.updateWordCategory(id, wordCategory);
+    return {
+      status: 200,
+      message: messages.wordCategory.updated,
+    };
   }
 
   async deleteWordCategory(id: string) {
-    return await this.wordCategoryRepository.deleteWordCategory(id);
+    await this.wordCategoryRepository.deleteWordCategory(id);
+    return {
+      status: 200,
+      message: messages.wordCategory.deleted,
+    };
   }
 }
