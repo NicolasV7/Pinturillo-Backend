@@ -34,11 +34,25 @@ export class GameRoomService {
     }
 
     async createGameRoom(gameRoom: GameRoom) {
-        const category = await this.categoryRepository.findById(gameRoom.id_category.id);
+        const categoryString = JSON.stringify(gameRoom.id_category);
+        const category_id = categoryString.replace(/"/g, '');
+
+        const category = await this.categoryRepository.findById(category_id);
+
+        console.log(category_id)
         if (!category) {
             return {
                 status: 404,
                 message: messages.category.notFound,
+            };
+        }
+
+        const existingNameCategory = await this.gameRoomRepository.findGameRoomByNameAndIdCategory(gameRoom.room_name, category_id);
+
+        if (existingNameCategory) {
+            return {
+                status: 409,
+                message: messages.gameRoom.alreadyExists,
             };
         }
 

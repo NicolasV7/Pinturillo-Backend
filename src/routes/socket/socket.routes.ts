@@ -10,11 +10,11 @@ module.exports = (expressWs) => {
 
   let solveWord = [];
 
-  router.ws("/game/:roomId", async (ws, req) => {
+  router.ws("/game-room/:roomId", async (ws, req) => {
     const idRoom = req.params.roomId;
     const userName = req.headers.username;
 
-    let roomRounds = 3;
+    let roomRounds = 1;
 
     const room = await socketController.verifyRoom(ws, idRoom);
 
@@ -33,7 +33,7 @@ module.exports = (expressWs) => {
         user.ws.send(`Your turn to play ${userPlayTurn}`);
       }
       if(user.ws !== ws && user.ws.readyState === ws.OPEN) {
-        user.ws.send(`[+]${userName} has joined the room`);
+        user.ws.send(`[+] ${userName} has joined the room`);
       }
     });
     if(SocketController.rooms[idRoom].size === 1) {
