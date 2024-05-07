@@ -13,6 +13,16 @@ export class WordService {
     async getAllWords() {
         return await this.wordRepository.getAllWords();
     }
+
+    async findWordByText(text: string) {
+        const wordData = await this.wordRepository.findWordByText(text);
+        if (!wordData) {
+            return {
+                message: messages.word.notFoundByText,
+            };
+        }
+        return await this.wordRepository.findWordByText(text);
+    }
     
     async findWordById(id: string) {
         const wordData = await this.wordRepository.findWordById(id);

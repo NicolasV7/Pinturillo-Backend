@@ -14,6 +14,16 @@ export class WordController {
         this.wordService = new WordService();
     }
 
+    public getWordByText = async (req: Request, res: Response) => {
+        const { text } = req.params;
+        try {
+            const word = await this.wordService.findWordByText(text);
+            return res.status(200).send(word);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    };
+
     public getWordById = async (req: Request, res: Response) => {
         const { id } = req.params;
         try {

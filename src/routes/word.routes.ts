@@ -6,6 +6,7 @@ export const WordRouter = express.Router();
 const wordController = new WordController();
 
 WordRouter.get("/getAll", wordController.getAllWords);
+WordRouter.get("/getByText/:text", wordController.getWordByText);
 WordRouter.get("/getById/:id", wordController.getWordById);
 WordRouter.post("/create", wordController.createWord);
 WordRouter.put("/update/:id", wordController.updateWord);

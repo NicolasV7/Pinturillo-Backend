@@ -1,3 +1,5 @@
+import { not } from "joi";
+
 export const messages = {
   category: {
     notFound: "Category not found",
@@ -16,15 +18,16 @@ export const messages = {
     deleted: "Game Room deleted",
   },
   wordCategory: {
-    notFound: "Word-Category Category not found",
-    notFoundById: "Word-Category Category with the given ID not found",
-    alreadyExists: "Word-Category Category already exists",
-    created: "Word-Category Category created",
-    updated: "Word-Category Category updated",
-    deleted: "Word-Category Category deleted",
+    notFound: "Word-Category not found",
+    notFoundById: "Word-Category with the given ID not found",
+    alreadyExists: "Word-Category already exists",
+    created: "Word-Category created",
+    updated: "Word-Category updated",
+    deleted: "Word-Category deleted",
   },
   word: {
     notFound: "Word not found",
+    notFoundByText: "Word with the given text not found",
     notFoundById: "Word with the given ID not found",
     alreadyExists: "Word already exists",
     created: "Word created",
