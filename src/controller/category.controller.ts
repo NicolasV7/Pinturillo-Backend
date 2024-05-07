@@ -14,11 +14,20 @@ export class CategoryController {
     this.categoryService = new CategoryService();
   }
 
+  public getAllCategory = async (_: Request, res: Response) => {
+    try {
+      const categories = await this.categoryService.getAllCategories();
+      return res.status(200).send(categories);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  };
+
   public getCategoryByName = async (req: Request, res: Response) => {
     const { name } = req.params;
     try {
-      const category = await this.categoryService.findByName(name);
-      return res.status(200).send(category);
+      const category = await this.categoryService.findCategoryByName(name);
+      return res.status(category.status).send(category.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -27,17 +36,8 @@ export class CategoryController {
   public getCategoryById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const category = await this.categoryService.findById(id);
-      return res.status(200).send(category);
-    } catch (error) {
-      return res.status(500).send(error.message);
-    }
-  };
-
-  public getAllCategory = async (_: Request, res: Response) => {
-    try {
-      const categories = await this.categoryService.getAll();
-      return res.status(200).send(categories);
+      const category = await this.categoryService.findCategoryById(id);
+      return res.status(category.status).send(category.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -53,18 +53,8 @@ export class CategoryController {
     category.name = categoryDTO.name as string;
 
     try {
-      await this.categoryService.create(category);
-      return res.status(201).send(messages.category.created);
-    } catch (error) {
-      return res.status(500).send(error.message);
-    }
-  };
-
-  public deleteCategory = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    try {
-      await this.categoryService.delete(id);
-      return res.status(200).send(messages.category.deleted);
+      const createdCategory = await this.categoryService.createCategory(category);
+      return res.status(createdCategory.status).send(createdCategory.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -81,8 +71,18 @@ export class CategoryController {
     category.name = categoryDTO.name as string;
 
     try {
-      await this.categoryService.update(id, category);
-      return res.status(200).send(messages.category.updated);
+      const updatedCategory = await this.categoryService.updateCategory(id, category);
+      return res.status(updatedCategory.status).send(updatedCategory.message);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  };
+
+  public deleteCategory = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const deletedCategory = await this.categoryService.deleteCategory(id);
+      return res.status(deletedCategory.status).send(deletedCategory.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }

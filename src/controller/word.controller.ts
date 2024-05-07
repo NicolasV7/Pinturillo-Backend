@@ -14,6 +14,15 @@ export class WordController {
         this.wordService = new WordService();
     }
 
+    public getAllWords = async (_: Request, res: Response) => {
+        try {
+            const words = await this.wordService.getAllWords();
+            return res.status(200).send(words);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    };
+
     public getWordByText = async (req: Request, res: Response) => {
         const { text } = req.params;
         try {
@@ -29,15 +38,6 @@ export class WordController {
         try {
             const word = await this.wordService.findWordById(id);
             return res.status(word.status).send(word.message);
-        } catch (error) {
-            return res.status(500).send(error.message);
-        }
-    };
-
-    public getAllWords = async (_: Request, res: Response) => {
-        try {
-            const words = await this.wordService.getAllWords();
-            return res.status(200).send(words);
         } catch (error) {
             return res.status(500).send(error.message);
         }
