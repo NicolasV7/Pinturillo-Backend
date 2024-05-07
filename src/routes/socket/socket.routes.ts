@@ -18,7 +18,7 @@ module.exports = (expressWs) => {
 
     const room = await socketController.verifyRoom(ws, idRoom);
 
-    if (!room) {
+    if (room === null) {
       return;
     }
 
@@ -80,7 +80,7 @@ module.exports = (expressWs) => {
           }
         });
       } else if (
-        jsonMessage.type === "START_GAME" &&
+        jsonMessage.type === 'START_GAME' &&
         SocketController.rooms[idRoom].size > 1 &&
         room.state === "En curso"
       ) {
@@ -114,7 +114,7 @@ module.exports = (expressWs) => {
               time = timeController;
               if (
                 timeController > 0 &&
-                solveWord.length < SocketController.rooms[idRoom].size
+                solveWord.length < usersPlay.length
               ) {
                 user.ws.send(`[+] Time left: ${timeController}`);
               } else {

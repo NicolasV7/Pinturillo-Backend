@@ -44,6 +44,10 @@ export class WordService {
         };
     }
 
+    findWordByIdS(id: string) {
+        return this.wordRepository.findWordById(id);
+    }
+
     async createWord(word: Word) {
         const wordCreate = await this.wordRepository.findWordByText(word.text);
         if (wordCreate) {

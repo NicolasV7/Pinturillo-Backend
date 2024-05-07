@@ -47,7 +47,7 @@ export class SocketController {
     SocketController.rooms[roomId].add({ ws, userName, score: 0 });
   }
 
-  async leaveRoom(ws, roomId) {
+  leaveRoom(ws, roomId) {
     if (SocketController.rooms[roomId]) {
       const userToDelete = Array.from(SocketController.rooms[roomId]).find(
         (user: any) => user.ws === ws
@@ -60,7 +60,7 @@ export class SocketController {
     }
   }
 
-  async guessWord(roomId, word) {
+  guessWord(roomId, word) {
     if (SocketController.rooms[roomId]) {
       if (word.toLowerCase() === this.asignWord.toLowerCase()) {
         return true;
@@ -69,7 +69,7 @@ export class SocketController {
     }
   }
 
-  async assingTurn(roomId) {
+  assingTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
       const users = Array.from(SocketController.rooms[roomId]);
@@ -82,7 +82,7 @@ export class SocketController {
     }
   }
 
-  async playerTurn(roomId, ws) {
+  playerTurn(roomId, ws) {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
         if (user.user.ws === ws) {
@@ -105,11 +105,12 @@ export class SocketController {
       const randomWord = words.categories[random];
 
       const word = new WordService();
-      const selectWord: Word = await word.findWordByText(randomWord.name);
+      const selectWord: Word = await word.findWordByIdS(randomWord.id);
       this.asignWord = selectWord.text;
+      return this.asignWord;
 
     }
-    return;
+    return null;
   }
 
   async score(roomId, scorePosition, ws, time){
@@ -131,7 +132,7 @@ export class SocketController {
     }
   }
 
-  async endTurn(roomId){
+  endTurn(roomId){
     if (SocketController.rooms[roomId]) {
       for(const user of this.userTurn){
         if(user.turn == 1){
@@ -144,7 +145,7 @@ export class SocketController {
     }
   }
 
-  async endGame(roomId, ws){
+  endGame(roomId, ws){
     this.asignWord = "";
     if(SocketController.rooms[roomId]){
       const users = Array.from(SocketController.rooms[roomId]);
