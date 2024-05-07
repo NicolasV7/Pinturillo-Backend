@@ -46,14 +46,15 @@ export class WordCategoryService {
         message: messages.wordCategory.notFound,
       };
     }
-    
-    if (idWord && idCategory) {
+
+    const existingWordCategory = await this.wordCategoryRepository.findWordCategoryByWordIdAndCategoryId(wordCategory.id_word, wordCategory.id_category);
+    if (existingWordCategory) {
       return {
         status: 409,
         message: messages.wordCategory.alreadyExists,
       };
     }
-
+    
     await this.wordCategoryRepository.createWordCategory(wordCategory);
     return {
       status: 201,
