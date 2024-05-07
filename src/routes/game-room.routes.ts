@@ -5,8 +5,8 @@ export const GameRoomRouter = express.Router();
 
 const gameRoomController = new GameRoomController();
 
-GameRoomRouter.get('/getAll', gameRoomController.getAllGameRooms);
-GameRoomRouter.get('/getById/:id', gameRoomController.findGameRoomById);
-GameRoomRouter.post('/create', gameRoomController.createGameRoom);
-GameRoomRouter.put('/update/:id', gameRoomController.updateGameRoom);
-GameRoomRouter.delete('/delete/:id', gameRoomController.deleteGameRoom);
+GameRoomRouter.get('/game-room/getAll', gameRoomController.getAllGameRooms);
+GameRoomRouter.get('/game-room/getById/:id', gameRoomController.findGameRoomById);
+GameRoomRouter.post('/game-room/create', gameRoomController.createGameRoom);
+GameRoomRouter.put('/game-room/update/:id', gameRoomController.updateGameRoom);
+GameRoomRouter.delete('/game-room/delete/:id', gameRoomController.deleteGameRoom);

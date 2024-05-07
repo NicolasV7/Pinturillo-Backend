@@ -11,6 +11,7 @@ import { GameRoomRouter } from "./routes/game-room.routes";
 import { WordRouter } from "./routes/word.routes";
 import { WordCategoryRouter } from "./routes/word-category.routes";
 
+
 const cors = require('cors');
 dotenv.config();
 
@@ -26,18 +27,15 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
-app.use('/api/v1/category', CategoryRouter);
-app.use('/api/v1/game-room', GameRoomRouter);
-app.use('/api/v1/word', WordRouter);
-app.use('/api/v1/word-category', WordCategoryRouter);
+app.use('/api/v1', CategoryRouter, GameRoomRouter, WordRouter, WordCategoryRouter);
 
 
 app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 AppDataSource.initialize()
   .then(async () => {
     app.listen(3000, () => {
-      console.log('Server is running on http://localhost:' + PORT);
+      console.log('[+] http://localhost:' + PORT);
     });
-    console.log('Data Source has been initialized!');
+    console.log('[+] Data initialized!');
   })
   .catch((error) => console.log(error));
