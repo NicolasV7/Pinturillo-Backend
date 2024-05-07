@@ -10,3 +10,5 @@ WordCategoryRouter.get("/word-category/getById/:id", wordCategoryController.getW
 WordCategoryRouter.post("/word-category/create", wordCategoryController.createWordCategory);
 WordCategoryRouter.put("/word-category/update/:id", wordCategoryController.updateWordCategory);
 WordCategoryRouter.delete("/word-category/delete/:id", wordCategoryController.deleteWordCategory);
+WordCategoryRouter.get("/word-category/getByIdWord/:id_word", wordCategoryController.getWordCategoryByIdWord);
+WordCategoryRouter.get("/word-category/getByIdCategory/:id_category", wordCategoryController.getWordCategoryByIdCategory);

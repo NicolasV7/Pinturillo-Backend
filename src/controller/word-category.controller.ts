@@ -71,4 +71,24 @@ export class WordCategoryController {
             return res.status(500).send(error.message);
         }
     }
+
+    public getWordCategoryByIdWord = async (req: Request, res: Response) => {
+        const { id_word } = req.params;
+        try {
+            const wordCategory = await this.wordCategoryService.findWordCategoryByIdWord(id_word);
+            return res.status(wordCategory.status).send(wordCategory.message);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
+
+    public getWordCategoryByIdCategory = async (req: Request, res: Response) => {
+        const { id_category } = req.params;
+        try {
+            const wordCategory = await this.wordCategoryService.findWordCategoryByIdCategory(id_category);
+            return res.status(wordCategory.status).send(wordCategory.message);
+        } catch (error) {
+            return res.status(500).send(error.message);
+        }
+    }
 }

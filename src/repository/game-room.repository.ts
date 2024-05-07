@@ -1,5 +1,4 @@
 
-import { Category } from "../entity/category.entity";
 import { AppDataSource } from "../data-source";
 import { GameRoom } from "../entity/game-room.entity";
 import { CategoryRepository } from "./category.repository";
