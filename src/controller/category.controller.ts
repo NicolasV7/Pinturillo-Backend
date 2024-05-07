@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
 
-import { messages } from "../assets/messages";
 import { Category } from "../entity/category.entity";
 import { CategoryDTO } from "../dto/category.dto";
 import { CategoryService } from "../service/category.service";

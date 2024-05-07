@@ -1,4 +1,3 @@
-import { start } from "repl";
 import { messages } from "../assets/messages";
 import { Word } from "../entity/word.entity";
 import { WordRepository } from "../repository/word.repository";

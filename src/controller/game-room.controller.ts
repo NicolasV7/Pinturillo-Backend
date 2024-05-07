@@ -25,7 +25,7 @@ export class GameRoomController {
     const { id } = req.params;
     try {
       const gameRoom = await this.gameRoomservice.findGameRoomById(id);
-      return res.status(200).send(gameRoom);
+      return res.status(gameRoom.status).send(gameRoom.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -40,8 +40,8 @@ export class GameRoomController {
 
     gameRoom.id = uuidv4();
     try {
-      await this.gameRoomservice.createGameRoom(gameRoom);
-      return res.status(201).send(messages.gameRoom.created);
+      const createdGameRoom = await this.gameRoomservice.createGameRoom(gameRoom);
+      return res.status(createdGameRoom.status).send(createdGameRoom.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -56,8 +56,8 @@ export class GameRoomController {
     }
 
     try {
-      await this.gameRoomservice.updateGameRoom(id, gameRoom);
-      return res.status(200).send(messages.gameRoom.updated);
+      const updatedGameRoom = await this.gameRoomservice.updateGameRoom(id, gameRoom);
+      return res.status(updatedGameRoom.status).send(updatedGameRoom.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
@@ -66,8 +66,8 @@ export class GameRoomController {
   public deleteGameRoom = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      await this.gameRoomservice.deleteGameRoom(id);
-      return res.status(200).send(messages.gameRoom.deleted);
+      const deletedGameRoom = await this.gameRoomservice.deleteGameRoom(id);
+      return res.status(deletedGameRoom.status).send(deletedGameRoom.message);
     } catch (error) {
       return res.status(500).send(error.message);
     }
