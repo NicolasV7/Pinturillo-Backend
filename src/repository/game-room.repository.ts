@@ -15,6 +15,10 @@ export class GameRoomRepository {
     return this.dataSource.update(id, gameRoom);
   }
 
+  async findGameRoomByIdCategory(id_category: string){
+    return this.dataSource.find({ where:  {id_category}  });
+  }
+
   async createGameRoom(gameRoom: GameRoom){
     return this.dataSource.save(gameRoom);
   }
@@ -28,8 +32,7 @@ export class GameRoomRepository {
   }
 
   async findGameRoomByNameAndIdCategory(room_name: string, id_category: string){
-    const categoryId = await this.categoryDataSource.findById(id_category);
-    return this.dataSource.findOneBy({ room_name, id_category: categoryId });
+    return this.dataSource.findOne({ where: { room_name, id_category } });
   }
 
 }

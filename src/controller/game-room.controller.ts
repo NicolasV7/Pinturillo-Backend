@@ -21,6 +21,16 @@ export class GameRoomController {
     }
   };
 
+  public findGameRoomByIdCategory = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    try {
+      const gameRooms = await this.gameRoomservice.findGameRoomByIdCategory(id);
+      return res.status(gameRooms.status).send(gameRooms.message);
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+  };
+
   public findGameRoomById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {

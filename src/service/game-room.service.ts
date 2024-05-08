@@ -17,6 +17,32 @@ export class GameRoomService {
         return await this.gameRoomRepository.getAllGamesRooms();
     }
 
+    async findGameRoomByIdCategory(id_category: string) {
+        const category = await this.categoryRepository.findById(id_category);
+        if (!category) {
+            return {
+                status: 404,
+                message: messages.category.notFound,
+            };
+        }
+
+        const gameRooms = await this.gameRoomRepository.findGameRoomByIdCategory(id_category);
+
+        if (!gameRooms) {
+            return {
+                status: 404,
+                message: messages.gameRoom.notFound,
+            };
+        }
+
+        const gameRoomsData = await this.gameRoomRepository.findGameRoomByIdCategory(id_category);
+
+        return {
+            status: 200,
+            message: gameRoomsData,
+        };
+    }
+
     async findGameRoomById(id: string) {
         const gameRoom = await this.gameRoomRepository.findGameRoomById(id);
         if (!gameRoom) {

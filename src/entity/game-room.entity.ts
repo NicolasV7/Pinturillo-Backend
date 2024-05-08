@@ -25,7 +25,11 @@ export class GameRoom extends BaseEntity {
   })
   state: string;
 
-  @ManyToOne(() => Category, (category) => category.id)
+  @Column({name : "id_category", nullable: false, type: "uuid"})
+  id_category: string;
+
+  @ManyToOne(() => Category, {nullable: false, eager: true})
   @JoinColumn({ name: "id_category" })
-  id_category: Category;
+  categories?: Category[];
+
 }
