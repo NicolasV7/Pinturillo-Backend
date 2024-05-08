@@ -1,7 +1,26 @@
-.idea/
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
 .vscode/
 node_modules/
 build/
 tmp/
 temp/
 .env
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# misc
+sockets/

@@ -8,8 +8,6 @@ import { Word } from "./entity/word.entity";
 
 import * as dotenv from "dotenv";
 
-
-
 dotenv.config();
 
 const { DB_HOST, DB_PORT, DB_USERNAME, DB_PASSWORD, DB_NAME} =

@@ -1,4 +1,4 @@
-export class Category {
-    id: number;
+export class CategoryDTO {
+    id: String;
     name: String;
 }

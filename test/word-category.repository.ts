@@ -1,5 +1,5 @@
 import { UpdateResult } from "typeorm";
-import { AppDataSource } from "../data-source";
+import { AppDataSource } from "@/data-source";
 import { WordCategory } from "../entity/word-category.entity";
 
 export class WordCategoryRepository {
