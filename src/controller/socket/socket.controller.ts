@@ -109,6 +109,8 @@ export class SocketController {
 
       const word = new WordService();
       const selectWord: Word = await word.findWordByIdS(randomWord.id);
+
+      console.log(selectWord.text);
       this.asignWord = selectWord.text;
       return this.asignWord;
 
