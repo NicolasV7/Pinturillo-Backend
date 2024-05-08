@@ -20,6 +20,7 @@ export const messages = {
     started: "En curso",
     finished: "Finalizado",
     notStarted: "Sin iniciar",
+    notValidState: "Invalid state, try with [Sin iniciar, En curso o Finalizado]", 
   },
   wordCategory: {
     notFound: "Word-Category not found",
