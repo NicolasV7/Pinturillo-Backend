@@ -13,8 +13,8 @@ export class GameRoomService {
         this.categoryRepository = new CategoryRepository();
     }
 
-    async getAllGamesRooms( state?: string) {
-        return await this.gameRoomRepository.getAllGamesRooms(state);
+    async getAllGamesRooms( state?: string, id_category?: string) {
+        return await this.gameRoomRepository.getAllGamesRooms(state , id_category);
     }
 
     async findGameRoomByIdCategory(id_category: string) {
