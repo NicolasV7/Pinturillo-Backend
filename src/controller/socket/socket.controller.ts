@@ -3,6 +3,7 @@ import { WordCategoryRepository } from "../../repository/word-category.repositor
 import { messages } from "../../assets/messages";
 import { WordService } from "../../service/word.service";
 import { Word } from "../../entity/word.entity";
+import { CategoryRepository } from "../../repository/category.repository";
 
 const WebSocket = require("ws");
 
@@ -94,27 +95,22 @@ export class SocketController {
 
   async asignWordToGuess(roomId) {
     if (SocketController.rooms[roomId]) {
-      console.log("entra");
       const gameRoom = new GameRoomRepository();
       const room = await (await gameRoom.findGameRoomById(roomId));
-      console.log(roomId);
-      console.log(room);
 
       const category = JSON.stringify(room.id_category);
       const category_id = category.replace(/"/g, '');
-      console.log(category_id);
 
-      const wordCategory = new WordCategoryRepository();
-      const words = await wordCategory.findWordCategoryByIdCategory(category_id);
-      console.log(words);
+      const wordCategory = new CategoryRepository();
+      const words = await wordCategory.findById(category_id);
 
-      const random = Math.floor(Math.random() * Number(words));
-      const randomWord = words[random];
-
-      console.log(randomWord);
+      const random = Math.floor(Math.random() * words.words.length);
+      const randomWord = words.words[random];
 
       const word = new WordService();
       const selectWord: Word = await word.findWordByIdS(randomWord.id);
+
+      console.log(selectWord.text);
       this.asignWord = selectWord.text;
       return this.asignWord;
 

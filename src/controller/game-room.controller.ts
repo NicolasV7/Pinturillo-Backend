@@ -12,9 +12,10 @@ export class GameRoomController {
     this.gameRoomservice = new GameRoomService();
   }
 
-  public getAllGameRooms = async (_: Request, res: Response) => {
+  public getAllGameRooms = async (req: Request, res: Response) => {
+    const state = <string> req.query.state;
     try {
-      const gameRooms = await this.gameRoomservice.getAllGamesRooms();
+      const gameRooms = await this.gameRoomservice.getAllGamesRooms(state);
       return res.status(200).send(gameRooms);
     } catch (error) {
       return res.status(500).send(error.message);

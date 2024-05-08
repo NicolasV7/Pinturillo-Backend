@@ -13,8 +13,8 @@ export class GameRoomService {
         this.categoryRepository = new CategoryRepository();
     }
 
-    async getAllGamesRooms() {
-        return await this.gameRoomRepository.getAllGamesRooms();
+    async getAllGamesRooms( state?: string) {
+        return await this.gameRoomRepository.getAllGamesRooms(state);
     }
 
     async findGameRoomByIdCategory(id_category: string) {
@@ -48,7 +48,7 @@ export class GameRoomService {
         if (!gameRoom) {
             return {
                 status: 404,
-                message: messages.gameRoom.notFound,
+                message: messages.gameRoom.notFoundById,
             };
         }
         const gameRoomData = await this.gameRoomRepository.findGameRoomById(id);

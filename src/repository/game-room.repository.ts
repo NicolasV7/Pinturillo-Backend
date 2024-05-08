@@ -6,9 +6,10 @@ import { CategoryRepository } from "./category.repository";
 export class GameRoomRepository {
   private dataSource = AppDataSource.getRepository(GameRoom);
   private categoryDataSource = new CategoryRepository();
+  private validState = ["Sin iniciar", "En curso", "Finalizado"];
 
-  async getAllGamesRooms(){
-    return this.dataSource.find();
+  async getAllGamesRooms(state?: string){
+    return this.dataSource.find({ where:  state? {state} : {} });
   }
 
   async updateGameRoom(id: string, gameRoom: GameRoom){

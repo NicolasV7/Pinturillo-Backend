@@ -80,7 +80,7 @@ module.exports = (expressWs) => {
           }
         });
       } else if (
-        jsonMessage.type === 'START_GAME' &&
+        jsonMessage.type === 'START' &&
         SocketController.rooms[idRoom].size > 1 &&
         room.state === "En curso"
       ) {
