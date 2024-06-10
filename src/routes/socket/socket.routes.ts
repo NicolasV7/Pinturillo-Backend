@@ -9,6 +9,8 @@ module.exports = (expressWs) => {
 
   let solveWord = [];
 
+  let hasFinishedTurn = false;
+
   router.ws("/game-room/:roomId", async (ws, req) => {
     const idRoom = req.params.roomId;
     const userName = req.query.username;
@@ -122,8 +124,13 @@ module.exports = (expressWs) => {
         console.log(error);
       }
     }
-
+ 
     async function finishTurn() {
+      if (hasFinishedTurn) {
+        return;
+      }
+    
+      hasFinishedTurn = true;
       roomRounds--;
       if (roomRounds > 0) {
         solveWord = [];
@@ -135,10 +142,11 @@ module.exports = (expressWs) => {
             user.ws.send(JSON.stringify({ type: 'info', text: `[+] Game finished` }));
           }
         });
-        socketController.endGame(idRoom, ws);
         socketController.closeRoom(idRoom);
       }
     }
+    
+    
     
 
     ws.on("close", async () => {
