@@ -109,7 +109,6 @@ export class SocketController {
 
       this.asignWord = selectWord.text;
       return this.asignWord;
-
     }
     return null;
   }
@@ -159,5 +158,15 @@ export class SocketController {
         ws.send(JSON.stringify({ type: 'info', text: podiumMessage }));
       });
     }
-  }  
+  }
+
+  broadcastDrawing(roomId, data) {
+    if (SocketController.rooms[roomId]) {
+      SocketController.rooms[roomId].forEach((user: any) => {
+        if (user.ws.readyState === user.ws.OPEN) {
+          user.ws.send(JSON.stringify({ type: 'drawing', data }));
+        }
+      });
+    }
+  }
 }

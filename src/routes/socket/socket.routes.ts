@@ -46,6 +46,7 @@ module.exports = (expressWs) => {
 
     ws.on("message", async (msg) => {
       const jsonMessage = JSON.parse(msg);
+
       if (jsonMessage.type === "SEND_MESSAGE") {
         SocketController.rooms[idRoom].forEach(async (user) => {
           const wordMessage = socketController.guessWord(idRoom, jsonMessage.data);
@@ -74,12 +75,10 @@ module.exports = (expressWs) => {
             await finishTurn();
           }
         });
-      } else if (
-        jsonMessage.type === 'START' &&
-        SocketController.rooms[idRoom].size > 1 &&
-        room.state === "En curso"
-      ) {
+      } else if (jsonMessage.type === 'START' && SocketController.rooms[idRoom].size > 1 && room.state === "En curso") {
         await startGame();
+      } else if (jsonMessage.type === 'drawing') {
+        socketController.broadcastDrawing(idRoom, jsonMessage.data);
       }
     });
 
@@ -124,12 +123,12 @@ module.exports = (expressWs) => {
         console.log(error);
       }
     }
- 
+
     async function finishTurn() {
       if (hasFinishedTurn) {
         return;
       }
-    
+
       hasFinishedTurn = true;
       roomRounds--;
       if (roomRounds > 0) {
@@ -145,9 +144,6 @@ module.exports = (expressWs) => {
         socketController.closeRoom(idRoom);
       }
     }
-    
-    
-    
 
     ws.on("close", async () => {
       try {
