@@ -12,7 +12,7 @@ module.exports = (expressWs) => {
 
   router.ws("/game-room/:roomId", async (ws, req) => {
     const idRoom = req.params.roomId;
-    const userName = req.headers.username;
+    const userName = req.query.username;
 
     let roomRounds = 1;
 

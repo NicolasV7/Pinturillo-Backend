@@ -1,11 +1,8 @@
 import { GameRoomRepository } from "../../repository/game-room.repository";
-import { WordCategoryRepository } from "../../repository/word-category.repository";
 import { messages } from "../../assets/messages";
 import { WordService } from "../../service/word.service";
 import { Word } from "../../entity/word.entity";
 import { CategoryRepository } from "../../repository/category.repository";
-
-const WebSocket = require("ws");
 
 export class SocketController {
   public static rooms = {};

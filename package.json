@@ -18,6 +18,7 @@
     "express": "4.19.2",
     "express-ws": "^5.0.2",
     "http": "^0.0.1-security",
+    "http-proxy-middleware": "^3.0.0",
     "joi": "^17.13.0",
     "morgan": "1.10.0",
     "pg": "^8.4.0",

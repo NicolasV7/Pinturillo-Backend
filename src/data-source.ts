@@ -21,7 +21,6 @@ export const AppDataSource = new DataSource({
   password: DB_PASSWORD,
   database: DB_NAME,
   synchronize: false,
-//logging logs sql command on the treminal
   logging:  false,
   entities: [Category, GameRoom, WordCategory, Word],
   migrations: [__dirname + "/migration/*.ts"],

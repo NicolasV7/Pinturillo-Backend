@@ -33,7 +33,6 @@ app.use('/api/v1/ws', ws);
 
 app.use('/api/v1', CategoryRouter, GameRoomRouter, WordRouter, WordCategoryRouter);
 
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 AppDataSource.initialize()
