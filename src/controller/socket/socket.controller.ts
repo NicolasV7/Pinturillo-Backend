@@ -146,17 +146,18 @@ export class SocketController {
     }
   }
 
-  endGame(roomId, ws){
+  endGame(roomId, ws) {
     this.asignWord = "";
-    if(SocketController.rooms[roomId]){
+    if (SocketController.rooms[roomId]) {
       const users = Array.from(SocketController.rooms[roomId]);
       const result = users.map((user: any) => {
         return { userName: user.userName, score: user.score };
       });
       result.sort((a: any, b: any) => b.score - a.score);
       result.forEach((result: any, index: number) => {
-        ws.send(`Puesto ${index + 1}: ${result.userName} con ${result.score} puntos`);
+        const podiumMessage = `Puesto ${index + 1}: ${result.userName} con ${result.score} puntos`;
+        ws.send(JSON.stringify({ type: 'info', text: podiumMessage }));
       });
     }
-  }
+  }  
 }
