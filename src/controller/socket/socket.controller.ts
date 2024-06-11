@@ -73,9 +73,7 @@ export class SocketController {
   assingTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
-      const users = Array.from(SocketController.rooms[roomId]).filter(
-        (user) => !user.userName.endsWith("-e72112a8")
-      );
+      const users = Array.from(SocketController.rooms[roomId]); // Eliminamos el filtro aquí
       let turn = 1;
       for (const user of users) {
         this.userTurn.push({ user, turn });
