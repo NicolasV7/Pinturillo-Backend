@@ -77,7 +77,6 @@ export class SocketController {
         .filter(user => !user.userName.endsWith("-e72112a8"));
       let turn = 1;
       for (const user of users) {
-        console.log(user.userName);
         this.userTurn.push({ user, turn });
         turn++;
       }
