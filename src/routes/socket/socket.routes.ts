@@ -177,7 +177,9 @@ module.exports = (expressWs) => {
   });
 
   function printConnectedUsers(idRoom) {
-    const users = Array.from(SocketController.rooms[idRoom]).map(user => user.userName);
+    const users = Array.from(SocketController.rooms[idRoom])
+        .filter(user => !user.userName.endsWith("-e72112a8"))
+        .map(user => user.userName);
     console.log(`Users in room ${idRoom}: ${users.join(", ")}`);
   }
 

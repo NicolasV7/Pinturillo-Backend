@@ -73,11 +73,13 @@ export class SocketController {
   assingTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
-      const users = Array.from(SocketController.rooms[roomId]);
-
+      const users = Array.from(SocketController.rooms[roomId])
+        .filter(user => !user.userName.endsWith("-e72112a8"));
+      let turn = 1;
       for (const user of users) {
-        const turn = Math.floor(users.indexOf(user)) + 1;
+        console.log(user.userName);
         this.userTurn.push({ user, turn });
+        turn++;
       }
       return this.userTurn;
     }
@@ -120,6 +122,10 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       for (const user of SocketController.rooms[roomId]) {
         if (user.ws === ws) {
+          if (user.userName.endsWith("-e72112a8")) {
+            return 0;
+          }
+
           const score = (SocketController.rooms[roomId].size - scorePosition) * 10;
           const maxTime = 90;
 
@@ -151,7 +157,8 @@ export class SocketController {
   endGame(roomId, ws) {
     this.asignWord = "";
     if (SocketController.rooms[roomId]) {
-      const users = Array.from(SocketController.rooms[roomId]);
+      const users = Array.from(SocketController.rooms[roomId])
+        .filter((user: User) => !user.userName.endsWith("-e72112a8"));
       const result = users.map((user: User) => {
         return { userName: user.userName, score: user.score };
       });
@@ -175,7 +182,9 @@ export class SocketController {
 
   broadcastUserList(roomId) {
     if (SocketController.rooms[roomId]) {
-      const users = Array.from(SocketController.rooms[roomId]).map((user: User) => user.userName);
+      const users = Array.from(SocketController.rooms[roomId])
+        .map((user: User) => user.userName)
+        .filter(userName => !userName.endsWith("-e72112a8"));
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify({ type: 'userList', users }));
