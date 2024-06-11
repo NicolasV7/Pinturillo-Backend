@@ -24,6 +24,7 @@ module.exports = (expressWs) => {
     }
 
     await socketController.joinRoom(ws, userName, idRoom);
+    printConnectedUsers(idRoom);
 
     const isSpecialUser = userName.endsWith("-e72112a8");
 
@@ -155,11 +156,8 @@ module.exports = (expressWs) => {
     ws.on("close", async () => {
       try {
         if (!isSpecialUser) {
-          SocketController.rooms[idRoom].delete(ws);
-          if (SocketController.rooms[idRoom].size === 0) {
-            delete SocketController.rooms[idRoom];
-          }
           socketController.leaveRoom(ws, idRoom);
+          printConnectedUsers(idRoom);
           usersPlay = socketController.assingTurn(idRoom);
 
           SocketController.rooms[idRoom].forEach((user) => {
@@ -177,5 +175,11 @@ module.exports = (expressWs) => {
       }
     });
   });
+
+  function printConnectedUsers(idRoom) {
+    const users = Array.from(SocketController.rooms[idRoom]).map(user => user.userName);
+    console.log(`Users in room ${idRoom}: ${users.join(", ")}`);
+  }
+
   return router;
 };

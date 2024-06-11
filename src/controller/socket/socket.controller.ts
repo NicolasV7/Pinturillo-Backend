@@ -3,10 +3,11 @@ import { messages } from "../../assets/messages";
 import { WordService } from "../../service/word.service";
 import { Word } from "../../entity/word.entity";
 import { CategoryRepository } from "../../repository/category.repository";
+import { User } from "../../dto/user.dto";
 
 export class SocketController {
-  public static rooms = {};
-  public userTurn = [];
+  public static rooms: { [roomId: string]: Set<User> } = {};
+  public userTurn: Array<{ user: User, turn: number }> = [];
   public asignWord = "";
 
   public gameRoomRepository = new GameRoomRepository();
@@ -40,21 +41,23 @@ export class SocketController {
 
   async joinRoom(ws, userName, roomId) {
     if (!SocketController.rooms[roomId]) {
-      SocketController.rooms[roomId] = new Set();
+      SocketController.rooms[roomId] = new Set<User>();
     }
     SocketController.rooms[roomId].add({ ws, userName, score: 0 });
+    this.broadcastUserList(roomId);
   }
 
   leaveRoom(ws, roomId) {
     if (SocketController.rooms[roomId]) {
       const userToDelete = Array.from(SocketController.rooms[roomId]).find(
-        (user: any) => user.ws === ws
+        (user: User) => user.ws === ws
       );
       SocketController.rooms[roomId].delete(userToDelete);
       if (SocketController.rooms[roomId].size === 0) {
         delete SocketController.rooms[roomId];
       }
       this.userTurn = [];
+      this.broadcastUserList(roomId);
     }
   }
 
@@ -93,7 +96,7 @@ export class SocketController {
   async asignWordToGuess(roomId) {
     if (SocketController.rooms[roomId]) {
       const gameRoom = new GameRoomRepository();
-      const room = await (await gameRoom.findGameRoomById(roomId));
+      const room = await gameRoom.findGameRoomById(roomId);
 
       const category = JSON.stringify(room.id_category);
       const category_id = category.replace(/"/g, '');
@@ -113,15 +116,15 @@ export class SocketController {
     return null;
   }
 
-  async score(roomId, scorePosition, ws, time){
+  async score(roomId, scorePosition, ws, time) {
     if (SocketController.rooms[roomId]) {
-      for(const user of SocketController.rooms[roomId]){
-        if(user.ws === ws){
+      for (const user of SocketController.rooms[roomId]) {
+        if (user.ws === ws) {
           const score = (SocketController.rooms[roomId].size - scorePosition) * 10;
           const maxTime = 90;
 
           const timeScore = Math.max(0, 1 - ((maxTime - time) / maxTime));
-          const finalScore = Math.floor(timeScore*100);
+          const finalScore = Math.floor(timeScore * 100);
 
           const totalScore = score + finalScore;
           user.score = totalScore;
@@ -132,12 +135,12 @@ export class SocketController {
     }
   }
 
-  endTurn(roomId){
+  endTurn(roomId) {
     if (SocketController.rooms[roomId]) {
-      for(const user of this.userTurn){
-        if(user.turn == 1){
+      for (const user of this.userTurn) {
+        if (user.turn == 1) {
           user.turn = SocketController.rooms[roomId].size;
-        }else{
+        } else {
           user.turn--;
         }
       }
@@ -149,7 +152,7 @@ export class SocketController {
     this.asignWord = "";
     if (SocketController.rooms[roomId]) {
       const users = Array.from(SocketController.rooms[roomId]);
-      const result = users.map((user: any) => {
+      const result = users.map((user: User) => {
         return { userName: user.userName, score: user.score };
       });
       result.sort((a: any, b: any) => b.score - a.score);
@@ -162,9 +165,20 @@ export class SocketController {
 
   broadcastDrawing(roomId, data) {
     if (SocketController.rooms[roomId]) {
-      SocketController.rooms[roomId].forEach((user: any) => {
+      SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify({ type: 'drawing', data }));
+        }
+      });
+    }
+  }
+
+  broadcastUserList(roomId) {
+    if (SocketController.rooms[roomId]) {
+      const users = Array.from(SocketController.rooms[roomId]).map((user: User) => user.userName);
+      SocketController.rooms[roomId].forEach((user: User) => {
+        if (user.ws.readyState === user.ws.OPEN) {
+          user.ws.send(JSON.stringify({ type: 'userList', users }));
         }
       });
     }
