@@ -73,7 +73,9 @@ export class SocketController {
   assingTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
-      const users = Array.from(SocketController.rooms[roomId]); // Eliminamos el filtro aquí
+      const users = Array.from(SocketController.rooms[roomId]).filter(
+        (user: User) => !user.userName.endsWith("-e72112a8")
+      );
       let turn = 1;
       for (const user of users) {
         this.userTurn.push({ user, turn });
@@ -144,7 +146,7 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
         if (user.turn == 1) {
-          user.turn = SocketController.rooms[roomId].size;
+          user.turn = this.userTurn.length; // Cambiado para usar el tamaño de userTurn
         } else {
           user.turn--;
         }
