@@ -34,16 +34,31 @@ module.exports = (expressWs) => {
 
       SocketController.rooms[idRoom].forEach((user) => {
         if (user.ws === ws) {
-          user.ws.send(JSON.stringify({ type: 'info', text: `Your turn to play ${userPlayTurn}` }));
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `Your turn to play ${userPlayTurn}`,
+            })
+          );
         }
         if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
-          user.ws.send(JSON.stringify({ type: 'info', text: `[+] ${userName} has joined the room` }));
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `[+] ${userName} has joined the room`,
+            })
+          );
         }
       });
 
       if (SocketController.rooms[idRoom].size === 1) {
         SocketController.rooms[idRoom].forEach((user) => {
-          user.ws.send(JSON.stringify({ type: 'info', text: `[+] Waiting for more players to join the room` }));
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `[+] Waiting for more players to join the room`,
+            })
+          );
         });
       }
     }
@@ -54,38 +69,77 @@ module.exports = (expressWs) => {
       if (jsonMessage.type === "SEND_MESSAGE") {
         if (!isSpecialUser) {
           SocketController.rooms[idRoom].forEach(async (user) => {
-            const wordMessage = socketController.guessWord(idRoom, jsonMessage.data);
+            const wordMessage = socketController.guessWord(
+              idRoom,
+              jsonMessage.data
+            );
 
-            if (user.ws === ws && user.ws.readyState === ws.OPEN && wordMessage) {
-              user.ws.send(JSON.stringify({ type: 'info', text: `[+] You have guessed the word` }));
+            if (
+              user.ws === ws &&
+              user.ws.readyState === ws.OPEN &&
+              wordMessage
+            ) {
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[+] You have guessed the word`,
+                })
+              );
               solveWord.push(user.ws);
-              const score = await socketController.score(idRoom, solveWord.length - 1, ws, time);
-              user.ws.send(JSON.stringify({ type: 'info', text: `[+] Your score is: ${score}` }));
+              const score = await socketController.score(
+                idRoom,
+                solveWord.length - 1,
+                ws,
+                time
+              );
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[+] Your score is: ${score}`,
+                })
+              );
             }
 
             if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
               if (wordMessage) {
-                user.ws.send(JSON.stringify({ type: 'info', text: `[+] ${userName} has guessed the word` }));
+                user.ws.send(
+                  JSON.stringify({
+                    type: "info",
+                    text: `[+] ${userName} has guessed the word`,
+                  })
+                );
               } else {
-                user.ws.send(JSON.stringify({ type: 'message', username: userName, text: jsonMessage.data }));
+                user.ws.send(
+                  JSON.stringify({
+                    type: "message",
+                    username: userName,
+                    text: jsonMessage.data,
+                  })
+                );
               }
             }
 
             if (solveWord.length === SocketController.rooms[idRoom].size) {
               SocketController.rooms[idRoom].forEach((user) => {
                 if (user.ws.readyState === ws.OPEN) {
-                  user.ws.send(JSON.stringify({ type: 'info', text: `[+] Round finished` }));
+                  user.ws.send(
+                    JSON.stringify({ type: "info", text: `[+] Round finished` })
+                  );
                 }
               });
               await finishTurn();
             }
           });
         }
-      } else if (jsonMessage.type === 'START' && SocketController.rooms[idRoom].size > 1 && room.state === "En curso") {
+      } else if (
+        jsonMessage.type === "START" &&
+        SocketController.rooms[idRoom].size > 1 &&
+        room.state === "En curso"
+      ) {
         if (!isSpecialUser) {
           await startGame();
         }
-      } else if (jsonMessage.type === 'drawing') {
+      } else if (jsonMessage.type === "drawing") {
         socketController.broadcastDrawing(idRoom, jsonMessage.data);
       }
     });
@@ -101,12 +155,24 @@ module.exports = (expressWs) => {
           if (user.ws.readyState === ws.OPEN && turn === 1) {
             constUser = user.userName;
             solveWord.push(user.ws);
-            user.ws.send(JSON.stringify({ type: 'info', text: `[+] Your turn to play` }));
-            user.ws.send(JSON.stringify({ type: 'info', text: `[+] Word to draw: ${asignWord}` }));
+            user.ws.send(
+              JSON.stringify({ type: "info", text: `[+] Your turn to play` })
+            );
+            user.ws.send(
+              JSON.stringify({
+                type: "info",
+                text: `[+] Word to draw: ${asignWord}`,
+              })
+            );
 
             usersPlay = socketController.endTurn(idRoom);
           } else {
-            user.ws.send(JSON.stringify({ type: 'info', text: `[+] ${constUser} is drawing` }));
+            user.ws.send(
+              JSON.stringify({
+                type: "info",
+                text: `[+] ${constUser} is drawing`,
+              })
+            );
           }
 
           const limitTime = 90;
@@ -116,10 +182,17 @@ module.exports = (expressWs) => {
               timeController--;
               time = timeController;
               if (timeController > 0 && solveWord.length < usersPlay.length) {
-                user.ws.send(JSON.stringify({ type: 'info', text: `[+] Time left: ${timeController}` }));
+                user.ws.send(
+                  JSON.stringify({
+                    type: "info",
+                    text: `[+] Time left: ${timeController}`,
+                  })
+                );
               } else {
                 clearInterval(interval);
-                user.ws.send(JSON.stringify({ type: 'info', text: `[+] Time is over` }));
+                user.ws.send(
+                  JSON.stringify({ type: "info", text: `[+] Time is over` })
+                );
                 resolve();
               }
             }, 1000);
@@ -146,7 +219,9 @@ module.exports = (expressWs) => {
         SocketController.rooms[idRoom].forEach((user) => {
           if (user.ws.readyState === ws.OPEN) {
             socketController.endGame(idRoom, user.ws);
-            user.ws.send(JSON.stringify({ type: 'info', text: `[+] Game finished` }));
+            user.ws.send(
+              JSON.stringify({ type: "info", text: `[+] Game finished` })
+            );
           }
         });
         socketController.closeRoom(idRoom);
@@ -162,10 +237,23 @@ module.exports = (expressWs) => {
 
           SocketController.rooms[idRoom].forEach((user) => {
             if (user.ws.readyState === ws.OPEN) {
-              user.ws.send(JSON.stringify({ type: 'info', text: `[-] ${userName} has left the room` }));
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[-] ${userName} has left the room`,
+                })
+              );
               if (SocketController.rooms[idRoom].size > 1) {
-                const userPlayTurn = socketController.playerTurn(idRoom, user.ws);
-                user.ws.send(JSON.stringify({ type: 'info', text: `[+] Next player to play: ${userPlayTurn}` }));
+                const userPlayTurn = socketController.playerTurn(
+                  idRoom,
+                  user.ws
+                );
+                user.ws.send(
+                  JSON.stringify({
+                    type: "info",
+                    text: `[+] Next player to play: ${userPlayTurn}`,
+                  })
+                );
               }
             }
           });
@@ -178,16 +266,15 @@ module.exports = (expressWs) => {
 
   function printConnectedUsers(idRoom) {
     const users = Array.from(SocketController.rooms[idRoom])
-        .filter(user => !user.userName.endsWith("-e72112a8"))
-        .map(user => user.userName);
-    const userListMessage = JSON.stringify({ type: 'userList', users });
+      .filter((user) => !user.userName.endsWith("-e72112a8"))
+      .map((user) => user.userName);
+    const userListMessage = JSON.stringify({ type: "userList", users });
     SocketController.rooms[idRoom].forEach((user) => {
-        if (user.ws.readyState === user.ws.OPEN) {
-            user.ws.send(userListMessage);
-        }
+      if (user.ws.readyState === user.ws.OPEN) {
+        user.ws.send(userListMessage);
+      }
     });
-}
-
+  }
 
   return router;
 };

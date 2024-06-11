@@ -7,7 +7,7 @@ import { User } from "../../dto/user.dto";
 
 export class SocketController {
   public static rooms: { [roomId: string]: Set<User> } = {};
-  public userTurn: Array<{ user: User, turn: number }> = [];
+  public userTurn: Array<{ user: User; turn: number }> = [];
   public asignWord = "";
 
   public gameRoomRepository = new GameRoomRepository();
@@ -73,8 +73,9 @@ export class SocketController {
   assingTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
-      const users = Array.from(SocketController.rooms[roomId])
-        .filter(user => !user.userName.endsWith("-e72112a8"));
+      const users = Array.from(SocketController.rooms[roomId]).filter(
+        (user) => !user.userName.endsWith("-e72112a8")
+      );
       let turn = 1;
       for (const user of users) {
         this.userTurn.push({ user, turn });
@@ -100,7 +101,7 @@ export class SocketController {
       const room = await gameRoom.findGameRoomById(roomId);
 
       const category = JSON.stringify(room.id_category);
-      const category_id = category.replace(/"/g, '');
+      const category_id = category.replace(/"/g, "");
 
       const wordCategory = new CategoryRepository();
       const words = await wordCategory.findById(category_id);
@@ -125,10 +126,11 @@ export class SocketController {
             return 0;
           }
 
-          const score = (SocketController.rooms[roomId].size - scorePosition) * 10;
+          const score =
+            (SocketController.rooms[roomId].size - scorePosition) * 10;
           const maxTime = 90;
 
-          const timeScore = Math.max(0, 1 - ((maxTime - time) / maxTime));
+          const timeScore = Math.max(0, 1 - (maxTime - time) / maxTime);
           const finalScore = Math.floor(timeScore * 100);
 
           const totalScore = score + finalScore;
@@ -156,15 +158,18 @@ export class SocketController {
   endGame(roomId, ws) {
     this.asignWord = "";
     if (SocketController.rooms[roomId]) {
-      const users = Array.from(SocketController.rooms[roomId])
-        .filter((user: User) => !user.userName.endsWith("-e72112a8"));
+      const users = Array.from(SocketController.rooms[roomId]).filter(
+        (user: User) => !user.userName.endsWith("-e72112a8")
+      );
       const result = users.map((user: User) => {
         return { userName: user.userName, score: user.score };
       });
       result.sort((a: any, b: any) => b.score - a.score);
       result.forEach((result: any, index: number) => {
-        const podiumMessage = `Puesto ${index + 1}: ${result.userName} con ${result.score} puntos`;
-        ws.send(JSON.stringify({ type: 'info', text: podiumMessage }));
+        const podiumMessage = `Puesto ${index + 1}: ${result.userName} con ${
+          result.score
+        } puntos`;
+        ws.send(JSON.stringify({ type: "info", text: podiumMessage }));
       });
     }
   }
@@ -173,7 +178,7 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
-          user.ws.send(JSON.stringify({ type: 'drawing', data }));
+          user.ws.send(JSON.stringify({ type: "drawing", data }));
         }
       });
     }
@@ -183,10 +188,10 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       const users = Array.from(SocketController.rooms[roomId])
         .map((user: User) => user.userName)
-        .filter(userName => !userName.endsWith("-e72112a8"));
+        .filter((userName) => !userName.endsWith("-e72112a8"));
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
-          user.ws.send(JSON.stringify({ type: 'userList', users }));
+          user.ws.send(JSON.stringify({ type: "userList", users }));
         }
       });
     }
