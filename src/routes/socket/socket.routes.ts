@@ -180,8 +180,14 @@ module.exports = (expressWs) => {
     const users = Array.from(SocketController.rooms[idRoom])
         .filter(user => !user.userName.endsWith("-e72112a8"))
         .map(user => user.userName);
-    console.log(`Users in room ${idRoom}: ${users.join(", ")}`);
-  }
+    const userListMessage = JSON.stringify({ type: 'userList', users });
+    SocketController.rooms[idRoom].forEach((user) => {
+        if (user.ws.readyState === user.ws.OPEN) {
+            user.ws.send(userListMessage);
+        }
+    });
+}
+
 
   return router;
 };
