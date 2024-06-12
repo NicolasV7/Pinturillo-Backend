@@ -175,7 +175,6 @@ export class SocketController {
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify(podiumData));
-          console.log(`Sent endGame message to ${user.userName}`);
         }
       });
       await this.closeRoom(roomId);
