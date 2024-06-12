@@ -146,7 +146,7 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
         if (user.turn == 1) {
-          user.turn = this.userTurn.length; // Cambiado para usar el tamaño de userTurn
+          user.turn = this.userTurn.length;
         } else {
           user.turn--;
         }
