@@ -183,7 +183,7 @@ export class SocketController {
 
   broadcastDrawing(roomId, data) {
     if (SocketController.rooms[roomId]) {
-      SocketController.rooms[roomId].forEach((user: User) => {
+      SocketController.rooms[roomId].forEach((user) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify({ type: "drawing", data }));
         }
