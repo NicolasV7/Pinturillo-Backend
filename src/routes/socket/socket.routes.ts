@@ -1,6 +1,6 @@
-import { SocketController } from "../../controller/socket/socket.controller";
 const express = require("express");
 const router = express.Router();
+import { SocketController } from "../../controller/socket/socket.controller";
 
 module.exports = (expressWs) => {
   const socketController = new SocketController();
@@ -15,7 +15,7 @@ module.exports = (expressWs) => {
     const idRoom = req.params.roomId;
     const userName = req.query.username;
 
-    let roomRounds = 1;
+    let roomRounds = 2;
 
     const room = await socketController.verifyRoom(ws, idRoom);
 
@@ -146,11 +146,12 @@ module.exports = (expressWs) => {
 
     async function startGame() {
       try {
+        hasFinishedTurn = false;  // Reiniciar aquí
         const asignWord = await socketController.asignWordToGuess(idRoom);
         const users = Array.from(SocketController.rooms[idRoom]);
         let constUser = "";
     
-        const userPromise = users.map(async (user: any) => {
+        const userPromise = users.map(async (user) => {
           const turn = await socketController.playerTurn(idRoom, user.ws);
           if (user.ws.readyState === ws.OPEN && turn === 1) {
             constUser = user.userName;
@@ -175,7 +176,7 @@ module.exports = (expressWs) => {
             );
           }
     
-          const limitTime = 90;
+          const limitTime = 70;
           let timeController = limitTime;
           return new Promise<void>((resolve) => {
             const interval = setInterval(() => {
@@ -205,7 +206,6 @@ module.exports = (expressWs) => {
       }
     }
     
-    
 
     async function finishTurn() {
       if (hasFinishedTurn) {
@@ -220,7 +220,7 @@ module.exports = (expressWs) => {
       } else {
         SocketController.rooms[idRoom].forEach((user) => {
           if (user.ws.readyState === ws.OPEN) {
-            socketController.endGame(idRoom, user.ws);
+            socketController.endGame(idRoom);  // Ajustado para usar solo idRoom
             user.ws.send(
               JSON.stringify({ type: "info", text: `[+] Game finished` })
             );

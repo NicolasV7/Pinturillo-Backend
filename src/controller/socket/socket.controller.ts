@@ -9,7 +9,6 @@ export class SocketController {
   public static rooms: { [roomId: string]: Set<User> } = {};
   public userTurn: Array<{ user: User; turn: number }> = [];
   public asignWord = "";
-
   public gameRoomRepository = new GameRoomRepository();
 
   async verifyRoom(ws, roomId) {
@@ -141,7 +140,6 @@ export class SocketController {
       }
     }
   }
-
   endTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
@@ -154,8 +152,9 @@ export class SocketController {
       return this.userTurn;
     }
   }
+  
 
-  async endGame(roomId, ws) {
+  async endGame(roomId) {
     this.asignWord = "";
     if (SocketController.rooms[roomId]) {
       const users = Array.from(SocketController.rooms[roomId]).filter(
@@ -176,8 +175,10 @@ export class SocketController {
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify(podiumData));
+          console.log(`Sent endGame message to ${user.userName}`);
         }
       });
+      await this.closeRoom(roomId);
     }
   }
   
