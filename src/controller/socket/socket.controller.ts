@@ -74,7 +74,7 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       this.userTurn = [];
       const users = Array.from(SocketController.rooms[roomId]).filter(
-        (user: User) => !user.userName.endsWith("-e72112a8")
+        (user) => !user.userName.endsWith("-e72112a8")
       );
       let turn = 1;
       for (const user of users) {
@@ -146,7 +146,7 @@ export class SocketController {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
         if (user.turn == 1) {
-          user.turn = this.userTurn.length;
+          user.turn = SocketController.rooms[roomId].size;
         } else {
           user.turn--;
         }
@@ -155,7 +155,7 @@ export class SocketController {
     }
   }
 
-  endGame(roomId, ws) {
+  async endGame(roomId, ws) {
     this.asignWord = "";
     if (SocketController.rooms[roomId]) {
       const users = Array.from(SocketController.rooms[roomId]).filter(
@@ -165,14 +165,23 @@ export class SocketController {
         return { userName: user.userName, score: user.score };
       });
       result.sort((a: any, b: any) => b.score - a.score);
-      result.forEach((result: any, index: number) => {
-        const podiumMessage = `Puesto ${index + 1}: ${result.userName} con ${
-          result.score
-        } puntos`;
-        ws.send(JSON.stringify({ type: "info", text: podiumMessage }));
+  
+      const podium = result.slice(0, 3);
+      const podiumData = {
+        type: "endGame",
+        podium,
+        redirectUrl: "/winners"
+      };
+  
+      SocketController.rooms[roomId].forEach((user: User) => {
+        if (user.ws.readyState === user.ws.OPEN) {
+          user.ws.send(JSON.stringify(podiumData));
+        }
       });
     }
   }
+  
+  
 
   broadcastDrawing(roomId, data) {
     if (SocketController.rooms[roomId]) {
