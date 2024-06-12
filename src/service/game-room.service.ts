@@ -65,7 +65,6 @@ export class GameRoomService {
 
         const category = await this.categoryRepository.findById(category_id);
 
-        console.log(category_id)
         if (!category) {
             return {
                 status: 404,

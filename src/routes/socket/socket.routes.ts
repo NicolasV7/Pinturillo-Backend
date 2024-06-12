@@ -1,7 +1,6 @@
-import { SocketController } from "../../controller/socket/socket.controller";
-
 const express = require("express");
 const router = express.Router();
+import { SocketController } from "../../controller/socket/socket.controller";
 
 module.exports = (expressWs) => {
   const socketController = new SocketController();
@@ -9,12 +8,14 @@ module.exports = (expressWs) => {
   expressWs.applyTo(router);
 
   let solveWord = [];
+  let usersPlay = [];
+  let hasFinishedTurn = false;
 
   router.ws("/game-room/:roomId", async (ws, req) => {
     const idRoom = req.params.roomId;
-    const userName = req.headers.username;
+    const userName = req.query.username;
 
-    let roomRounds = 1;
+    let roomRounds = 2;
 
     const room = await socketController.verifyRoom(ws, idRoom);
 
@@ -23,103 +24,176 @@ module.exports = (expressWs) => {
     }
 
     await socketController.joinRoom(ws, userName, idRoom);
+    printConnectedUsers(idRoom);
 
-    let usersPlay = socketController.assingTurn(idRoom);
+    const isSpecialUser = userName.endsWith("-e72112a8");
 
-    const userPlayTurn = await socketController.playerTurn(idRoom, ws);
+    if (!isSpecialUser) {
+      usersPlay = socketController.assingTurn(idRoom);
+      const userPlayTurn = await socketController.playerTurn(idRoom, ws);
 
-    SocketController.rooms[idRoom].forEach((user) => {
-      if (user.ws === ws) {
-        user.ws.send(`Your turn to play ${userPlayTurn}`);
-      }
-      if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
-        user.ws.send(`[+] ${userName} has joined the room`);
-      }
-    });
-    if (SocketController.rooms[idRoom].size === 1) {
       SocketController.rooms[idRoom].forEach((user) => {
-        user.ws.send(`[+] Waiting for more players to join the room`);
+        if (user.ws === ws) {
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `Your turn to play ${userPlayTurn}`,
+            })
+          );
+        }
+        if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `[+] ${userName} has joined the room`,
+            })
+          );
+        }
       });
+
+      if (SocketController.rooms[idRoom].size === 1) {
+        SocketController.rooms[idRoom].forEach((user) => {
+          user.ws.send(
+            JSON.stringify({
+              type: "info",
+              text: `[+] Waiting for more players to join the room`,
+            })
+          );
+        });
+      }
     }
 
     ws.on("message", async (msg) => {
       const jsonMessage = JSON.parse(msg);
+
       if (jsonMessage.type === "SEND_MESSAGE") {
-        SocketController.rooms[idRoom].forEach(async user => {
-          const wordMessage = socketController.guessWord(
-            idRoom,
-            jsonMessage.data
-          );
-
-          if (user.ws == ws && user.ws.readyState === ws.OPEN && wordMessage) {
-            user.ws.send(`[+] You have guessed the word`);
-            solveWord.push(user.ws);
-            const score = await socketController.score(
+        if (!isSpecialUser) {
+          SocketController.rooms[idRoom].forEach(async (user) => {
+            const wordMessage = socketController.guessWord(
               idRoom,
-              solveWord.length - 1,
-              ws,
-              time
+              jsonMessage.data
             );
-            user.ws.send(`[+] Your score is: ${score}`);
-          }
 
-          if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
-            if (wordMessage) {
-              user.ws.send(`[+] ${userName} has guessed the word`);
-            } else {
-              user.ws.send(`[+] ${userName}: ${jsonMessage.data}`);
+            if (
+              user.ws === ws &&
+              user.ws.readyState === ws.OPEN &&
+              wordMessage
+            ) {
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[+] You have guessed the word`,
+                })
+              );
+              solveWord.push(user.ws);
+              const score = await socketController.score(
+                idRoom,
+                solveWord.length - 1,
+                ws,
+                time
+              );
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[+] Your score is: ${score}`,
+                })
+              );
             }
-          }
 
-          if (solveWord.length === SocketController.rooms[idRoom].size) {
-            SocketController.rooms[idRoom].forEach((user) => {
-              if (user.ws.readyState === ws.OPEN) {
-                user.ws.send(`[+] Round finished`);
+            if (user.ws !== ws && user.ws.readyState === ws.OPEN) {
+              if (wordMessage) {
+                user.ws.send(
+                  JSON.stringify({
+                    type: "info",
+                    text: `[+] ${userName} has guessed the word`,
+                  })
+                );
+              } else {
+                user.ws.send(
+                  JSON.stringify({
+                    type: "message",
+                    username: userName,
+                    text: jsonMessage.data,
+                  })
+                );
               }
-            });
-          }
-        });
+            }
+
+            if (solveWord.length === SocketController.rooms[idRoom].size) {
+              SocketController.rooms[idRoom].forEach((user) => {
+                if (user.ws.readyState === ws.OPEN) {
+                  user.ws.send(
+                    JSON.stringify({ type: "info", text: `[+] Round finished` })
+                  );
+                }
+              });
+              await finishTurn();
+            }
+          });
+        }
       } else if (
-        jsonMessage.type === 'START' &&
+        jsonMessage.type === "START" &&
         SocketController.rooms[idRoom].size > 1 &&
         room.state === "En curso"
       ) {
-        await startGame();
+        if (!isSpecialUser) {
+          await startGame();
+        }
+      } else if (jsonMessage.type === "drawing") {
+        socketController.broadcastDrawing(idRoom, jsonMessage.data);
       }
     });
+
     async function startGame() {
       try {
+        hasFinishedTurn = false;  // Reiniciar aquí
         const asignWord = await socketController.asignWordToGuess(idRoom);
         const users = Array.from(SocketController.rooms[idRoom]);
         let constUser = "";
-
-        const userPromise = users.map(async (user: any) => {
+    
+        const userPromise = users.map(async (user) => {
           const turn = await socketController.playerTurn(idRoom, user.ws);
           if (user.ws.readyState === ws.OPEN && turn === 1) {
             constUser = user.userName;
             solveWord.push(user.ws);
-            user.ws.send(`[+] Your turn to play`);
-            user.ws.send(`[+] Word to draw: ${asignWord}`);
-
+            user.ws.send(
+              JSON.stringify({ type: "info", text: `[+] Your turn to play` })
+            );
+            user.ws.send(
+              JSON.stringify({
+                type: "info",
+                text: `[+] Word to draw: ${asignWord}`,
+              })
+            );
+    
             usersPlay = socketController.endTurn(idRoom);
           } else {
-            user.ws.send(`[+] ${userName} is drawing`);
+            user.ws.send(
+              JSON.stringify({
+                type: "info",
+                text: `[+] ${constUser} is drawing`,
+              })
+            );
           }
-
-          const limitTime = 90;
+    
+          const limitTime = 70;
           let timeController = limitTime;
           return new Promise<void>((resolve) => {
             const interval = setInterval(() => {
               timeController--;
               time = timeController;
-              if (
-                timeController > 0 &&
-                solveWord.length < usersPlay.length
-              ) {
-                user.ws.send(`[+] Time left: ${timeController}`);
+              if (timeController > 0 && solveWord.length < usersPlay.length) {
+                user.ws.send(
+                  JSON.stringify({
+                    type: "timer",
+                    time: timeController,
+                  })
+                );
               } else {
                 clearInterval(interval);
-                user.ws.send(`[+] Time is over`);
+                user.ws.send(
+                  JSON.stringify({ type: "info", text: `[+] Time is over` })
+                );
                 resolve();
               }
             }, 1000);
@@ -131,8 +205,14 @@ module.exports = (expressWs) => {
         console.log(error);
       }
     }
+    
 
     async function finishTurn() {
+      if (hasFinishedTurn) {
+        return;
+      }
+
+      hasFinishedTurn = true;
       roomRounds--;
       if (roomRounds > 0) {
         solveWord = [];
@@ -140,36 +220,63 @@ module.exports = (expressWs) => {
       } else {
         SocketController.rooms[idRoom].forEach((user) => {
           if (user.ws.readyState === ws.OPEN) {
-            socketController.endGame(idRoom, user.ws);
-            user.ws.send(`[+] Game finished`);
+            socketController.endGame(idRoom);  // Ajustado para usar solo idRoom
+            user.ws.send(
+              JSON.stringify({ type: "info", text: `[+] Game finished` })
+            );
           }
-          socketController.closeRoom(idRoom);
         });
+        socketController.closeRoom(idRoom);
       }
     }
 
     ws.on("close", async () => {
       try {
-        SocketController.rooms[idRoom].delete(ws);
-        if (SocketController.rooms[idRoom].size === 0) {
-          delete SocketController.rooms[idRoom];
-        }
-        socketController.leaveRoom(ws, idRoom);
-        usersPlay = socketController.assingTurn(idRoom);
+        if (!isSpecialUser) {
+          socketController.leaveRoom(ws, idRoom);
+          printConnectedUsers(idRoom);
+          usersPlay = socketController.assingTurn(idRoom);
 
-        SocketController.rooms[idRoom].forEach((user) => {
-          if (user.ws.readyState === ws.OPEN) {
-            user.ws.send(`[-] ${userName} has left the room`);
-            if (SocketController.rooms[idRoom].size > 1) {
-              const userPlayTurn = socketController.playerTurn(idRoom, user.ws);
-              user.ws.send(`[+] Next player to play: ${userPlayTurn}`);
+          SocketController.rooms[idRoom].forEach((user) => {
+            if (user.ws.readyState === ws.OPEN) {
+              user.ws.send(
+                JSON.stringify({
+                  type: "info",
+                  text: `[-] ${userName} has left the room`,
+                })
+              );
+              if (SocketController.rooms[idRoom].size > 1) {
+                const userPlayTurn = socketController.playerTurn(
+                  idRoom,
+                  user.ws
+                );
+                user.ws.send(
+                  JSON.stringify({
+                    type: "info",
+                    text: `[+] Next player to play: ${userPlayTurn}`,
+                  })
+                );
+              }
             }
-          }
-        });
+          });
+        }
       } catch (error) {
         console.log(error);
       }
     });
   });
+
+  function printConnectedUsers(idRoom) {
+    const users = Array.from(SocketController.rooms[idRoom])
+      .filter((user) => !user.userName.endsWith("-e72112a8"))
+      .map((user) => user.userName);
+    const userListMessage = JSON.stringify({ type: "userList", users });
+    SocketController.rooms[idRoom].forEach((user) => {
+      if (user.ws.readyState === user.ws.OPEN) {
+        user.ws.send(userListMessage);
+      }
+    });
+  }
+
   return router;
 };
