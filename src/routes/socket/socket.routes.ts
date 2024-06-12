@@ -141,6 +141,8 @@ module.exports = (expressWs) => {
         }
       } else if (jsonMessage.type === "drawing") {
         socketController.broadcastDrawing(idRoom, jsonMessage.data);
+      } else if (jsonMessage.type === "clear") {
+        socketController.broadcastClear(idRoom);
       }
     });
 
@@ -150,7 +152,7 @@ module.exports = (expressWs) => {
         const asignWord = await socketController.asignWordToGuess(idRoom);
         const users = Array.from(SocketController.rooms[idRoom]);
         let constUser = "";
-    
+
         const userPromise = users.map(async (user) => {
           const turn = await socketController.playerTurn(idRoom, user.ws);
           if (user.ws.readyState === ws.OPEN && turn === 1) {
@@ -165,7 +167,7 @@ module.exports = (expressWs) => {
                 text: `[+] Word to draw: ${asignWord}`,
               })
             );
-    
+
             usersPlay = socketController.endTurn(idRoom);
           } else {
             user.ws.send(
@@ -175,7 +177,7 @@ module.exports = (expressWs) => {
               })
             );
           }
-    
+
           const limitTime = 70;
           let timeController = limitTime;
           return new Promise<void>((resolve) => {
@@ -205,7 +207,6 @@ module.exports = (expressWs) => {
         console.log(error);
       }
     }
-    
 
     async function finishTurn() {
       if (hasFinishedTurn) {

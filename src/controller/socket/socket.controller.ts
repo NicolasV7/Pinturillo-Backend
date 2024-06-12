@@ -140,6 +140,7 @@ export class SocketController {
       }
     }
   }
+  
   endTurn(roomId) {
     if (SocketController.rooms[roomId]) {
       for (const user of this.userTurn) {
@@ -152,7 +153,6 @@ export class SocketController {
       return this.userTurn;
     }
   }
-  
 
   async endGame(roomId) {
     this.asignWord = "";
@@ -164,14 +164,14 @@ export class SocketController {
         return { userName: user.userName, score: user.score };
       });
       result.sort((a: any, b: any) => b.score - a.score);
-  
+
       const podium = result.slice(0, 3);
       const podiumData = {
         type: "endGame",
         podium,
         redirectUrl: "/winners"
       };
-  
+
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify(podiumData));
@@ -180,14 +180,22 @@ export class SocketController {
       await this.closeRoom(roomId);
     }
   }
-  
-  
 
   broadcastDrawing(roomId, data) {
     if (SocketController.rooms[roomId]) {
       SocketController.rooms[roomId].forEach((user: User) => {
         if (user.ws.readyState === user.ws.OPEN) {
           user.ws.send(JSON.stringify({ type: "drawing", data }));
+        }
+      });
+    }
+  }
+
+  broadcastClear(roomId) {
+    if (SocketController.rooms[roomId]) {
+      SocketController.rooms[roomId].forEach((user: User) => {
+        if (user.ws.readyState === user.ws.OPEN) {
+          user.ws.send(JSON.stringify({ type: "clear" }));
         }
       });
     }
